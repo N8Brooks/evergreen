@@ -5,7 +5,13 @@
   "editor.defaultFormatter": "denoland.vscode-deno",
   "editor.formatOnSave": true,
   "cSpell.words": [
-    "deno"
+    "deno",
+    "denodb",
+    "depl",
+    "kubectl",
+    "kubernetes",
+    "skaffold",
+    "skookumchoocher"
   ],
   "deno.suggest.imports.hosts": {
     "https://deno.land": true
