@@ -5,8 +5,8 @@
   "editor.defaultFormatter": "denoland.vscode-deno",
   "editor.formatOnSave": true,
   "cSpell.words": [
+    "Bson",
     "deno",
-    "denodb",
     "depl",
     "kubectl",
     "kubernetes",
