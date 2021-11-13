@@ -8,6 +8,14 @@ build:
   local:
     push: false
   artifacts:
+    - image: skookumchoocher/comments
+      context: comments
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
     - image: skookumchoocher/posts
       context: posts
       docker:

@@ -10,6 +10,13 @@ spec:
     - host: evergreen.com
       http:
         paths:
+          - path: /api/comments
+            pathType: Prefix
+            backend:
+              service:
+                name: comments-srv
+                port:
+                  number: 8000
           - path: /api/posts
             pathType: Prefix
             backend:

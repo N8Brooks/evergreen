@@ -1,5 +1,5 @@
 import { Router } from "../deps.ts";
-import { posts } from "../models/post.ts";
+import { comments } from "../models/comments.ts";
 
 const router = new Router();
 
@@ -11,30 +11,28 @@ router.post("/api/comments", async ({ request, response }) => {
   }
 
   const {
-    title,
-    url,
+    postId,
+    body,
   } = await result.value;
 
-  if (!title) {
-    console.error("Empty title");
+  if (!postId) {
+    console.error("No parent post");
     return;
   }
 
-  try {
-    new URL(url);
-  } catch {
-    console.error("Invalid url");
+  if (!body) {
+    console.log("No comment body");
     return;
   }
 
-  await posts.insertOne({
+  await comments.insertOne({
     upVotes: 1,
     downVotes: 0,
-    title,
-    url,
+    postId,
+    body,
   });
 
   response.status = 201;
 });
 
-export { router as createPostRouter };
+export { router as newCommentRouter };
