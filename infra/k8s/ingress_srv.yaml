@@ -10,21 +10,28 @@ spec:
     - host: evergreen.com
       http:
         paths:
-          - path: /api/posts/?(.*)
+          - path: /api/topics
             pathType: Prefix
             backend:
               service:
-                name: comments-srv
+                name: topics-srv
                 port:
                   number: 8000
-          - path: /api/posts
+          - path: /api/topics/(.+)
             pathType: Prefix
             backend:
               service:
                 name: posts-srv
                 port:
                   number: 8000
-          - path: /?(.*)
+          - path: /api/posts/(.+)
+            pathType: Prefix
+            backend:
+              service:
+                name: comments-srv
+                port:
+                  number: 8000
+          - path: /(.*)
             pathType: Prefix
             backend:
               service:

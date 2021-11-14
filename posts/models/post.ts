@@ -6,7 +6,7 @@ export interface PostSchema {
   _id: { $oid: string };
   upVotes: number;
   downVotes: number;
-  // topicId: string;
+  topicName: string;
   // userId: string;
   // comments: idk;
   title: string;

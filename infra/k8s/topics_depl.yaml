@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: topics-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: topics
+  template:
+    metadata:
+      labels:
+        app: topics
+    spec:
+      containers:
+        - name: topics
+          image: skookumchoocher/topics
+          env:
+            - name: MONGO_URI
+              value: "mongodb://topics-mongo-srv:27017/topics"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: topics-srv
+spec:
+  selector:
+    app: topics
+  ports:
+    - name: topics
+      protocol: TCP
+      port: 8000
+      targetPort: 8000
