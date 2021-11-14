@@ -10,7 +10,7 @@ spec:
     - host: evergreen.com
       http:
         paths:
-          - path: /api/comments
+          - path: /api/posts/?(.*)
             pathType: Prefix
             backend:
               service:
