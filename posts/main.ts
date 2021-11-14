@@ -1,10 +1,10 @@
-import { showPostRouter } from "./routes/show.ts";
-import { createPostRouter } from "./routes/new.ts";
+import { listPostRouter } from "./routes/list.ts";
+import { createPostRouter } from "./routes/create.ts";
 import { Application } from "./deps.ts";
 
 const app = new Application();
 
-app.use(showPostRouter.routes());
+app.use(listPostRouter.routes());
 app.use(createPostRouter.routes());
 
 console.log("Listening on 8000");

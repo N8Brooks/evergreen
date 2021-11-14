@@ -7,4 +7,4 @@ router.get("/api/posts", async ({ response }) => {
   response.body = await posts.find().toArray();
 });
 
-export { router as showPostRouter };
+export { router as listPostRouter };

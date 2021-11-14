@@ -1,5 +1,5 @@
 import { Router } from "../deps.ts";
-import { comments } from "../models/comments.ts";
+import { comments } from "../models/comment.ts";
 
 const router = new Router();
 
