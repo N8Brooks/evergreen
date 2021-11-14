@@ -24,3 +24,13 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: .
+    - image: skookumchoocher/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "**/*.ts"
+            dest: .
+          - src: "**/*.html"
+            dest: .
