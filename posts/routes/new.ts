@@ -3,7 +3,7 @@ import { posts } from "../models/post.ts";
 
 const router = new Router();
 
-router.post("/api/comments", async ({ request, response }) => {
+router.post("/api/posts", async ({ request, response }) => {
   const result = request.body();
   if (result.type !== "json") {
     console.error("That was not json");
