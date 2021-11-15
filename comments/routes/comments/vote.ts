@@ -7,7 +7,7 @@ const router = new Router();
 // TODO: Votes should be tracked for proper persistance
 // TODO: Should this be using a different route?
 
-router.patch("/api/comments/:commentId/comments", async (context) => {
+router.patch("/api/comments/:commentId", async (context) => {
   const { request, response, params } = context;
   const commentId = params?.commentId as unknown as { $oid: string };
 
