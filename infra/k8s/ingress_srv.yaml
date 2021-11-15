@@ -10,6 +10,34 @@ spec:
     - host: evergreen.com
       http:
         paths:
+          - path: /api/submissions/(\w*)/comments
+            pathType: Prefix
+            backend:
+              service:
+                name: comments-srv
+                port:
+                  number: 8000
+          - path: /api/comments/(\w*)(/comments)?
+            pathType: Prefix
+            backend:
+              service:
+                name: comments-srv
+                port:
+                  number: 8000
+          - path: /api/submissions/(\w*)
+            pathType: Prefix
+            backend:
+              service:
+                name: submissions-srv
+                port:
+                  number: 8000
+          - path: /api/topics/(\w*)/submissions
+            pathType: Prefix
+            backend:
+              service:
+                name: submissions-srv
+                port:
+                  number: 8000
           - path: /api/topics
             pathType: Prefix
             backend:
@@ -17,28 +45,7 @@ spec:
                 name: topics-srv
                 port:
                   number: 8000
-          - path: /api/topics/(.+)/submissions
-            pathType: Prefix
-            backend:
-              service:
-                name: submissions-srv
-                port:
-                  number: 8000
-          - path: /api/submissions/(.+)/comments
-            pathType: Prefix
-            backend:
-              service:
-                name: comments-srv
-                port:
-                  number: 8000
-          - path: /api/comments/(.+)(/comments)?
-            pathType: Prefix
-            backend:
-              service:
-                name: comments-srv
-                port:
-                  number: 8000
-          - path: /?(.*)
+          - path: /(.*)
             pathType: Prefix
             backend:
               service:

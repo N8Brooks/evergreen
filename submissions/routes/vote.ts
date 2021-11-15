@@ -1,10 +1,10 @@
-import { Bson, Router } from "../../deps.ts";
-import { comments } from "../../models/comments.ts";
-import { VoteActions } from "../../types/vote_actions.ts";
+import { Bson, Router } from "../deps.ts";
+import { submissions } from "../models/submissions.ts";
+import { VoteActions } from "../types/vote_actions.ts";
 
 const router = new Router();
 
-router.patch("/api/comments/:commentId", async (context) => {
+router.patch("/api/submissions/:submissionId", async (context) => {
   const { request, response, params } = context;
   const result = request.body();
   if (result.type !== "json") {
@@ -13,11 +13,11 @@ router.patch("/api/comments/:commentId", async (context) => {
     return;
   }
 
-  const { commentId } = params;
-  const filter = { _id: new Bson.ObjectId(commentId) };
-  const comment = await comments.findOne(filter);
-  if (!comment) {
-    console.error("Comment does not exist");
+  const { submissionId } = params;
+  const filter = { _id: new Bson.ObjectId(submissionId) };
+  const submission = await submissions.findOne(filter);
+  if (!submission) {
+    console.error("Submission does not exist");
     response.status = 400;
     return;
   }
@@ -25,18 +25,18 @@ router.patch("/api/comments/:commentId", async (context) => {
   const { action } = await result.value;
   switch (action) {
     case VoteActions.DownVote:
-      comments.updateOne(
+      submissions.updateOne(
         filter,
-        { $set: { downVotes: comment.downVotes + 1 } },
+        { $set: { downVotes: submission.downVotes + 1 } },
       );
       break;
     case VoteActions.Abstain:
       // May reverse previous vote in the future
       break;
     case VoteActions.UpVote:
-      comments.updateOne(
+      submissions.updateOne(
         filter,
-        { $set: { upVotes: comment.upVotes + 1 } },
+        { $set: { upVotes: submission.upVotes + 1 } },
       );
       break;
     default:
@@ -48,4 +48,4 @@ router.patch("/api/comments/:commentId", async (context) => {
   response.body = {};
 });
 
-export { router as voteCommentRouter };
+export { router as voteSubmissionRouter };
