@@ -1,33 +1,33 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: posts-depl
+  name: submissions-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: posts
+      app: submissions
   template:
     metadata:
       labels:
-        app: posts
+        app: submissions
     spec:
       containers:
-        - name: posts
-          image: skookumchoocher/posts
+        - name: submissions
+          image: skookumchoocher/submissions
           env:
             - name: MONGO_URI
-              value: "mongodb://posts-mongo-srv:27017/posts"
+              value: "mongodb://submissions-mongo-srv:27017/submissions"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: posts-srv
+  name: submissions-srv
 spec:
   selector:
-    app: posts
+    app: submissions
   ports:
-    - name: posts
+    - name: submissions
       protocol: TCP
       port: 8000
       targetPort: 8000

@@ -1,8 +1,8 @@
 /// <reference lib="dom" />
 
-const postFeed = document.getElementById("post-feed");
+const submissionFeed = document.getElementById("submission-feed");
 
-const request = new Request("/api/posts");
+const request = new Request("/api/submissions");
 
 const init = {
   method: "GET",
@@ -13,10 +13,10 @@ const init = {
 
 fetch(request, init)
   .then((response) => response.json())
-  .then((posts: any[]) => {
+  .then((submissions: any[]) => {
     const documentFragment = new DocumentFragment();
 
-    for (const { title, url, upVotes, downVotes } of posts) {
+    for (const { title, url, upVotes, downVotes } of submissions) {
       const article = document.createElement("article");
 
       const score = document.createElement("p");
@@ -31,7 +31,7 @@ fetch(request, init)
       documentFragment.appendChild(article);
     }
 
-    postFeed?.appendChild(documentFragment);
+    submissionFeed?.appendChild(documentFragment);
   })
   .catch((reason) => {
     console.error(reason);

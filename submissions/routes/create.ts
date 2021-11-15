@@ -1,18 +1,19 @@
 import { Router } from "../deps.ts";
-import { posts } from "../models/post.ts";
+import { submissions } from "../models/submissions.ts";
 
 const router = new Router();
 
-router.post("/api/topics/:topicName", async ({ params, request, response }) => {
+router.post("/api/topics/:topicId/submissions", async (context) => {
+  const { params, request, response } = context;
   const result = request.body();
   if (result.type !== "json") {
     console.error("That was not json");
     return;
   }
 
-  const topicName = params?.topicName;
+  const topicId = params?.topicId;
 
-  if (!topicName) {
+  if (!topicId) {
     console.error("No parent topic");
     return;
   }
@@ -34,10 +35,10 @@ router.post("/api/topics/:topicName", async ({ params, request, response }) => {
     return;
   }
 
-  await posts.insertOne({
+  await submissions.insertOne({
     upVotes: 1,
     downVotes: 0,
-    topicName,
+    topicId,
     title,
     url,
   });
@@ -45,4 +46,4 @@ router.post("/api/topics/:topicName", async ({ params, request, response }) => {
   response.status = 201;
 });
 
-export { router as createPostRouter };
+export { router as createSubmissionRouter };

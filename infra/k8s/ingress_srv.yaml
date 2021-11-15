@@ -17,21 +17,28 @@ spec:
                 name: topics-srv
                 port:
                   number: 8000
-          - path: /api/topics/(.+)
+          - path: /api/topics/(.+)/submissions
             pathType: Prefix
             backend:
               service:
-                name: posts-srv
+                name: submissions-srv
                 port:
                   number: 8000
-          - path: /api/posts/(.+)
+          - path: /api/submissions/(.+)/comments
             pathType: Prefix
             backend:
               service:
                 name: comments-srv
                 port:
                   number: 8000
-          - path: /(.*)
+          - path: /api/comments/(.+)
+            pathType: Prefix
+            backend:
+              service:
+                name: comments-srv
+                port:
+                  number: 8000
+          - path: /?(.*)
             pathType: Prefix
             backend:
               service:

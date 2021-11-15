@@ -16,8 +16,8 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: .
-    - image: skookumchoocher/posts
-      context: posts
+    - image: skookumchoocher/submissions
+      context: submissions
       docker:
         dockerfile: Dockerfile
       sync:

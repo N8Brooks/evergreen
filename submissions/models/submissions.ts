@@ -1,16 +1,16 @@
 import { mongoClient } from "./mongoClient.ts";
 
-const db = mongoClient.database("posts");
+const db = mongoClient.database("submissions");
 
-export interface PostSchema {
+export interface SubmissionSchema {
   _id: { $oid: string };
   upVotes: number;
   downVotes: number;
-  topicName: string;
+  topicId: string;
   // userId: string;
   // comments: idk;
   title: string;
   url: string;
 }
 
-export const posts = db.collection<PostSchema>("posts");
+export const submissions = db.collection<SubmissionSchema>("submissions");

@@ -7,7 +7,7 @@ export interface TopicSchema {
   name: string;
   // description: string;
   // userId: string;
-  // posts: idk;
+  // submissions: idk;
   upVotes: number;
   downVotes: number;
 }

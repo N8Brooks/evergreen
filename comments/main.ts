@@ -1,6 +1,6 @@
 import { Application } from "./deps.ts";
-import { listCommentsRouter } from "./routes/list.ts";
-import { createCommentRouter } from "./routes/create.ts";
+import { listCommentsRouter } from "./routes/listComments.ts";
+import { createCommentRouter } from "./routes/createComment.ts";
 
 const app = new Application();
 
