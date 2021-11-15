@@ -8,6 +8,7 @@ router.post("/api/topics/:topicId/submissions", async (context) => {
   const result = request.body();
   if (result.type !== "json") {
     console.error("That was not json");
+    response.status = 400;
     return;
   }
 
@@ -15,6 +16,7 @@ router.post("/api/topics/:topicId/submissions", async (context) => {
 
   if (!topicId) {
     console.error("No parent topic");
+    response.status = 400;
     return;
   }
 
@@ -25,6 +27,7 @@ router.post("/api/topics/:topicId/submissions", async (context) => {
 
   if (!title) {
     console.error("Empty title");
+    response.status = 400;
     return;
   }
 
@@ -32,10 +35,11 @@ router.post("/api/topics/:topicId/submissions", async (context) => {
     new URL(url);
   } catch {
     console.error("Invalid url");
+    response.status = 400;
     return;
   }
 
-  await submissions.insertOne({
+  const id = await submissions.insertOne({
     upVotes: 1,
     downVotes: 0,
     topicId,
@@ -43,6 +47,7 @@ router.post("/api/topics/:topicId/submissions", async (context) => {
     url,
   });
 
+  response.body = { id };
   response.status = 201;
 });
 

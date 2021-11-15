@@ -9,6 +9,7 @@ router.get("/api/comments/:commentId/comments", async (context) => {
 
   if (!commentId) {
     console.error("No parent comment");
+    response.status = 400;
     return;
   }
 

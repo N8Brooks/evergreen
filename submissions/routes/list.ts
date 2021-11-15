@@ -8,6 +8,7 @@ router.get("/api/topics/:topicId/submissions", async ({ params, response }) => {
 
   if (!topicId) {
     console.error("No parent topic");
+    response.status = 400;
     return;
   }
 

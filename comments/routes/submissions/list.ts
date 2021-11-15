@@ -9,6 +9,7 @@ router.get("/api/submissions/:submissionId/comments", async (context) => {
 
   if (!submissionId) {
     console.error("No parent submission");
+    response.status = 400;
     return;
   }
 

@@ -7,6 +7,7 @@ router.post("/api/topics", async ({ request, response }) => {
   const result = request.body();
   if (result.type !== "json") {
     console.error("That was not json");
+    response.status = 400;
     return;
   }
 
@@ -16,15 +17,17 @@ router.post("/api/topics", async ({ request, response }) => {
 
   if (!name) {
     console.error("Empty name");
+    response.status = 400;
     return;
   }
 
-  await topics.insertOne({
+  const id = await topics.insertOne({
     upVotes: 0,
     downVotes: 0,
     name,
   });
 
+  response.body = { id };
   response.status = 201;
 });
 

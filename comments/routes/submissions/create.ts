@@ -9,6 +9,7 @@ router.post("/api/submissions/:submissionId/comments", async (context) => {
   const result = request.body();
   if (result.type !== "json") {
     console.error("That was not json");
+    response.status = 400;
     return;
   }
 
@@ -16,6 +17,7 @@ router.post("/api/submissions/:submissionId/comments", async (context) => {
 
   if (!submissionId) {
     console.error("No parent submission");
+    response.status = 400;
     return;
   }
 
@@ -23,10 +25,11 @@ router.post("/api/submissions/:submissionId/comments", async (context) => {
 
   if (!body) {
     console.log("No comment body");
+    response.status = 400;
     return;
   }
 
-  await comments.insertOne({
+  const id = await comments.insertOne({
     upVotes: 1,
     downVotes: 0,
     commentIds: [],
@@ -34,6 +37,7 @@ router.post("/api/submissions/:submissionId/comments", async (context) => {
     body,
   });
 
+  response.body = { id };
   response.status = 201;
 });
 
