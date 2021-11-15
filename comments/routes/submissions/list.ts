@@ -1,5 +1,5 @@
-import { Router } from "../deps.ts";
-import { comments } from "../models/comments.ts";
+import { Router } from "../../deps.ts";
+import { comments } from "../../models/comments.ts";
 
 const router = new Router();
 
@@ -15,4 +15,4 @@ router.get("/api/submissions/:submissionId/comments", async (context) => {
   response.body = await comments.find({ submissionId }).toArray();
 });
 
-export { router as listCommentsRouter };
+export { router as listSubmissionCommentsRouter };

@@ -1,9 +1,9 @@
-import { Router } from "../deps.ts";
-import { comments } from "../models/comments.ts";
+import { Router } from "../../deps.ts";
+import { comments } from "../../models/comments.ts";
 
 const router = new Router();
 
-router.post("/api/submissions/:submissionId/comments", async (context) => {
+router.post("/api/comments/:commentId/comments", async (context) => {
   const { request, response, params } = context;
 
   const result = request.body();
@@ -12,10 +12,10 @@ router.post("/api/submissions/:submissionId/comments", async (context) => {
     return;
   }
 
-  const submissionId = params?.submissionId;
+  const parentCommentId = params?.commentId;
 
-  if (!submissionId) {
-    console.error("No parent submission");
+  if (!parentCommentId) {
+    console.error("No parent comment");
     return;
   }
 
@@ -30,11 +30,12 @@ router.post("/api/submissions/:submissionId/comments", async (context) => {
     upVotes: 1,
     downVotes: 0,
     commentIds: [],
-    submissionId,
+    submissionId: "",
+    parentId: parentCommentId,
     body,
   });
 
   response.status = 201;
 });
 
-export { router as createCommentRouter };
+export { router as createCommentCommentRouter };

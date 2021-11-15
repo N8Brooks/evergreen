@@ -1,11 +1,15 @@
 import { Application } from "./deps.ts";
-import { listCommentsRouter } from "./routes/listComments.ts";
-import { createCommentRouter } from "./routes/createComment.ts";
+import { createCommentCommentRouter } from "./routes/comments/create.ts";
+import { listCommentCommentsRouter } from "./routes/comments/list.ts";
+import { createSubmissionCommentRouter } from "./routes/submissions/create.ts";
+import { listSubmissionCommentsRouter } from "./routes/submissions/list.ts";
 
 const app = new Application();
 
-app.use(createCommentRouter.routes());
-app.use(listCommentsRouter.routes());
+app.use(createCommentCommentRouter.routes());
+app.use(listCommentCommentsRouter.routes());
+app.use(createSubmissionCommentRouter.routes());
+app.use(listSubmissionCommentsRouter.routes());
 
 console.log("Listening on 8000");
 
