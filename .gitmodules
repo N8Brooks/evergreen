@@ -1,0 +1,6 @@
+[submodule "comments/comments/common"]
+	path = comments/comments/common
+	url = https://github.com/N8Brooks/evergreen
+[submodule "submissions/common"]
+	path = submissions/common
+	url = https://github.com/N8Brooks/evergreen
