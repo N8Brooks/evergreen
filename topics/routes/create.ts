@@ -1,5 +1,5 @@
 import { Router } from "../deps.ts";
-import { topics } from "../models/topic.ts";
+import { topics } from "../models/topics.ts";
 
 const router = new Router();
 

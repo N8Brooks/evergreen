@@ -1,6 +1,6 @@
 import { Application } from "./deps.ts";
 import { createTopicRouter } from "./routes/create.ts";
-import { listTopicRouter } from "./routes/list.ts";
+import { listTopicsRouter } from "./routes/list.ts";
 
 const app = new Application();
 
