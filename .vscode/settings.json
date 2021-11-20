@@ -10,6 +10,7 @@
     "depl",
     "kubectl",
     "kubernetes",
+    "nats",
     "packup",
     "skaffold",
     "skookumchoocher"

@@ -1,6 +1,5 @@
-import { Bson, Router } from "../deps.ts";
+import { Bson, Router, VoteActions } from "../deps.ts";
 import { submissions } from "../models/submissions.ts";
-import { VoteActions } from "../types/vote_actions.ts";
 
 const router = new Router();
 
