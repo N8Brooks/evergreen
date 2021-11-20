@@ -5,7 +5,7 @@ import { listTopicsRouter } from "./routes/list.ts";
 const app = new Application();
 
 app.use(createTopicRouter.routes());
-app.use(listTopicRouter.routes());
+app.use(listTopicsRouter.routes());
 
 console.log("Listening on 8000!");
 
