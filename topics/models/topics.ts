@@ -1,4 +1,4 @@
-import { mongoClient } from "./mongoClient.ts";
+import { mongoClient } from "../deps.ts";
 
 const db = mongoClient.database("topics");
 
