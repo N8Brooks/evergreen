@@ -45,6 +45,13 @@ spec:
                 name: topics-srv
                 port:
                   number: 8000
+          - path: /api/users
+            pathType: Prefix
+            backend:
+              service:
+                name: users-srv
+                port:
+                  number: 8000
           - path: /(.*)
             pathType: Prefix
             backend:
