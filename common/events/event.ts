@@ -1,6 +1,6 @@
 import { Subjects } from "./subjects.ts";
 
-export interface PubSubEvent {
+export interface Event {
   subject: Subjects;
   message: unknown;
 }

@@ -1,10 +1,11 @@
 import { nats } from "../deps.ts";
-import { PubSubEvent } from "./pub_sub_event.ts";
+import { Subjects } from "./subjects.ts";
+import { Event } from "./event.ts";
 
-export abstract class Listener<T extends PubSubEvent> {
+export abstract class PubSubSubscription<T extends Event> {
   abstract readonly subject: T["subject"];
   abstract queue: string;
-  abstract onMessage(data: T["message"]): void;
+  abstract onMessage(message: T["message"]): void;
   protected natsConnection: nats.NatsConnection;
   private messageCodec: nats.Codec<T["message"]>;
 
