@@ -2,7 +2,7 @@ import { nats } from "../deps.ts";
 import { Subjects } from "./subjects.ts";
 import { Event } from "./event.ts";
 
-export abstract class PubSubSubscription<T extends Event> {
+export abstract class Subscriber<T extends Event> {
   abstract readonly subject: T["subject"];
   abstract queue: string;
   abstract onMessage(message: T["message"]): void;
