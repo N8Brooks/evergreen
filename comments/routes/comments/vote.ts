@@ -1,4 +1,4 @@
-import { Bson, Router, VoteActions } from "../../deps.ts";
+import { Bson, Router, VoteDirections } from "../../deps.ts";
 import { comments } from "../../models/comments.ts";
 
 const router = new Router();
@@ -21,25 +21,25 @@ router.patch("/api/comments/:commentId", async (context) => {
     return;
   }
 
-  const { action } = await result.value;
-  switch (action) {
-    case VoteActions.DownVote:
+  const { direction } = await result.value;
+  switch (direction) {
+    case VoteDirections.DownVote:
       comments.updateOne(
         filter,
         { $set: { downVotes: comment.downVotes + 1 } },
       );
       break;
-    case VoteActions.Abstain:
+    case VoteDirections.Abstain:
       // May reverse previous vote in the future
       break;
-    case VoteActions.UpVote:
+    case VoteDirections.UpVote:
       comments.updateOne(
         filter,
         { $set: { upVotes: comment.upVotes + 1 } },
       );
       break;
     default:
-      console.error("Invalid vote action");
+      console.error("Invalid vote direction");
       response.status = 400;
       return;
   }

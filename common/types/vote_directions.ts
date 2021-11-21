@@ -1,4 +1,4 @@
-export enum VoteActions {
+export enum VoteDirections {
   /** Decrement score */
   DownVote = -1,
 

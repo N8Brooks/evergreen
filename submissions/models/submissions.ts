@@ -10,7 +10,7 @@ export interface SubmissionSchema {
   userId: string;
   // comments;
   title: string;
-  url: string;
+  url?: string;
 }
 
 export const submissions = db.collection<SubmissionSchema>("submissions");

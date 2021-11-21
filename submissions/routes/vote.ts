@@ -1,4 +1,4 @@
-import { Bson, Router, VoteActions } from "../deps.ts";
+import { Bson, Router, VoteDirections } from "../deps.ts";
 import { submissions } from "../models/submissions.ts";
 
 const router = new Router();
@@ -21,25 +21,25 @@ router.patch("/api/submissions/:submissionId", async (context) => {
     return;
   }
 
-  const { action } = await result.value;
-  switch (action) {
-    case VoteActions.DownVote:
+  const { direction } = await result.value;
+  switch (direction) {
+    case VoteDirections.DownVote:
       submissions.updateOne(
         filter,
         { $set: { downVotes: submission.downVotes + 1 } },
       );
       break;
-    case VoteActions.Abstain:
+    case VoteDirections.Abstain:
       // May reverse previous vote in the future
       break;
-    case VoteActions.UpVote:
+    case VoteDirections.UpVote:
       submissions.updateOne(
         filter,
         { $set: { upVotes: submission.upVotes + 1 } },
       );
       break;
     default:
-      console.error("Invalid vote action");
+      console.error("Invalid vote direction");
       response.status = 400;
       return;
   }

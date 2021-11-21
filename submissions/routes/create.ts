@@ -33,7 +33,9 @@ router.post("/api/topics/:topicId/submissions", async (context) => {
   }
 
   try {
-    new URL(url);
+    if (url) {
+      new URL(url);
+    }
   } catch {
     console.error("Invalid url");
     response.status = 400;
