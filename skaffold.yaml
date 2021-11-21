@@ -14,7 +14,7 @@ build:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: "src/**/*.ts"
+          - src: "comments/**/*.ts"
             dest: .
     - image: skookumchoocher/submissions
       context: submissions
@@ -22,7 +22,7 @@ build:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: "src/**/*.ts"
+          - src: "submissions/**/*.ts"
             dest: .
     - image: skookumchoocher/users
       context: users
@@ -30,7 +30,7 @@ build:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: "src/**/*.ts"
+          - src: "users/**/*.ts"
             dest: .
     - image: skookumchoocher/topics
       context: topics
@@ -38,7 +38,7 @@ build:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: "src/**/*.ts"
+          - src: "topics/**/*.ts"
             dest: .
     - image: skookumchoocher/client
       context: client
