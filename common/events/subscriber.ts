@@ -1,5 +1,4 @@
 import { nats } from "../deps.ts";
-import { Subjects } from "./subjects.ts";
 import { Event } from "./event.ts";
 
 export abstract class Subscriber<T extends Event> {
