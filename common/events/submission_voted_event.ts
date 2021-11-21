@@ -1,8 +1,8 @@
 import { Subjects } from "./subjects.ts";
 import { VoteDirections } from "../types/vote_directions.ts";
-import { PubSubEvent } from "./pub_sub_event.ts";
+import { Event } from "./event.ts";
 
-export interface SubmissionVotedEvent extends PubSubEvent {
+export interface SubmissionVotedEvent extends Event {
   subject: Subjects.SubmissionVoted;
   message: {
     id: string;
