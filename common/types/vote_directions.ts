@@ -3,7 +3,7 @@ export enum VoteDirections {
   DownVote = -1,
 
   /** Has no effect on score */
-  Abstain = 0,
+  NoVote = 0,
 
   /** Increment score */
   UpVote = 1,
