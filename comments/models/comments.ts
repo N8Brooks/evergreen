@@ -11,10 +11,13 @@ export interface CommentSchema {
   /** Negative votes */
   downVotes: number;
 
+  /** Comment author */
+  userId: string;
+
   /** Replies to this comment */
   commentIds: string[];
 
-  /** The option comment this is replying to */
+  /** The optional comment this is replying to */
   parentId?: string;
 
   /** The submission this is in */

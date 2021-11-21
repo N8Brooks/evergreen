@@ -5,9 +5,9 @@ const db = mongoClient.database("topics");
 export interface TopicSchema {
   _id: { $oid: string };
   name: string;
+  userId: string;
   // description: string;
-  // userId: string;
-  // submissions: idk;
+  // submissions;
   upVotes: number;
   downVotes: number;
 }

@@ -23,6 +23,7 @@ router.post("/api/topics/:topicId/submissions", async (context) => {
   const {
     title,
     url,
+    userId,
   } = await result.value;
 
   if (!title) {
@@ -39,10 +40,17 @@ router.post("/api/topics/:topicId/submissions", async (context) => {
     return;
   }
 
+  if (!userId) {
+    console.error("No submission author");
+    response.status = 400;
+    return;
+  }
+
   const id = await submissions.insertOne({
     upVotes: 1,
     downVotes: 0,
     topicId,
+    userId,
     title,
     url,
   });

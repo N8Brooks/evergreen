@@ -7,8 +7,8 @@ export interface SubmissionSchema {
   upVotes: number;
   downVotes: number;
   topicId: string;
-  // userId: string;
-  // comments: idk;
+  userId: string;
+  // comments;
   title: string;
   url: string;
 }

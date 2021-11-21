@@ -13,6 +13,7 @@ router.post("/api/topics", async ({ request, response }) => {
 
   const {
     name,
+    userId,
   } = await result.value;
 
   if (!name) {
@@ -21,10 +22,17 @@ router.post("/api/topics", async ({ request, response }) => {
     return;
   }
 
+  if (!userId) {
+    console.error("No topic author");
+    response.status = 400;
+    return;
+  }
+
   const id = await topics.insertOne({
     upVotes: 0,
     downVotes: 0,
     name,
+    userId,
   });
 
   response.body = { id };

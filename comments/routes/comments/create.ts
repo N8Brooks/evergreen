@@ -21,10 +21,16 @@ router.post("/api/comments/:commentId/comments", async (context) => {
     return;
   }
 
-  const { body } = await result.value;
+  const { body, userId } = await result.value;
 
   if (!body) {
-    console.log("No comment body");
+    console.error("No comment body");
+    response.status = 400;
+    return;
+  }
+
+  if (!userId) {
+    console.error("No comment author");
     response.status = 400;
     return;
   }
@@ -33,6 +39,7 @@ router.post("/api/comments/:commentId/comments", async (context) => {
     upVotes: 1,
     downVotes: 0,
     commentIds: [],
+    userId,
     submissionId: "",
     parentId: parentCommentId,
     body,
