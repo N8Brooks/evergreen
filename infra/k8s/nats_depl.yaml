@@ -14,16 +14,14 @@ spec:
     spec:
       containers:
         - name: nats
-          image: nats-streaming:0.17.0
+          image: nats:2.6.5
           args:
             [
               "-p",
               "4222",
               "-m",
               "8222",
-              "-SD",
-              "-cid",
-              "evergreen",
+              "-js",
             ]
 ---
 apiVersion: v1
