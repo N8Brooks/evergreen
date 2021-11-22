@@ -29,7 +29,7 @@ router.patch("/api/comments/:commentId", async (context) => {
         { $set: { downVotes: comment.downVotes + 1 } },
       );
       break;
-    case VoteDirections.Abstain:
+    case VoteDirections.NoVote:
       // May reverse previous vote in the future
       break;
     case VoteDirections.UpVote:

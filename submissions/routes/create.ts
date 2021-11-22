@@ -1,4 +1,5 @@
-import { Router } from "../deps.ts";
+import { Bson, Router, VoteDirections } from "../deps.ts";
+import { submissionCreatedPublisher } from "../events.ts/submission_created_publisher.ts";
 import { submissions } from "../models/submissions.ts";
 
 const router = new Router();
@@ -48,9 +49,19 @@ router.post("/api/topics/:topicId/submissions", async (context) => {
     return;
   }
 
-  const id = await submissions.insertOne({
+  const objectId = await submissions.insertOne({
     upVotes: 1,
     downVotes: 0,
+    votes: { [userId]: VoteDirections.UpVote },
+    topicId,
+    userId,
+    title,
+    url,
+  }) as Bson.ObjectId;
+  const id = objectId.toHexString();
+
+  submissionCreatedPublisher.publish({
+    id,
     topicId,
     userId,
     title,
