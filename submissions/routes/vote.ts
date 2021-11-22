@@ -81,7 +81,8 @@ router.patch("/api/submissions/:submissionId", async (context) => {
 
   // Publish message
   submissionVotedPublisher.publish({
-    id: submissionId,
+    submissionId,
+    userId,
     direction: newVoteDirection,
   });
 

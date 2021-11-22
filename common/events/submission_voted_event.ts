@@ -5,7 +5,13 @@ import { Event } from "./event.ts";
 export interface SubmissionVotedEvent extends Event {
   subject: Subjects.SubmissionVoted;
   message: {
-    id: string;
+    /** Submission being voted on */
+    submissionId: string;
+
+    /** User doing the voting */
+    userId: string;
+
+    /** Direction of the vote */
     direction: VoteDirections;
   };
 }
