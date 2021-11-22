@@ -12,10 +12,6 @@ export interface SubmissionSchema {
   /** Total down votes */
   downVotes: number;
 
-  // TODO: find a better way to model this relationship
-  /** Maps userIds to voteDirections */
-  votes: Record<string, Omit<VoteDirections, VoteDirections.NoVote>>;
-
   /** Reference to topic */
   topicId: string;
 

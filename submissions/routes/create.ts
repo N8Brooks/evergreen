@@ -50,9 +50,8 @@ router.post("/api/topics/:topicId/submissions", async (context) => {
   }
 
   const objectId = await submissions.insertOne({
-    upVotes: 1,
+    upVotes: 0,
     downVotes: 0,
-    votes: { [userId]: VoteDirections.UpVote },
     topicId,
     userId,
     title,

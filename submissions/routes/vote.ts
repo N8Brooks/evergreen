@@ -1,8 +1,15 @@
 import { Bson, Router, VoteDirections } from "../deps.ts";
 import { submissionVotedPublisher } from "../events.ts/submission_voted_publisher.ts";
 import { submissions } from "../models/submissions.ts";
+import { votes } from "../models/votes.ts";
 
 const router = new Router();
+
+const voteDirections = [
+  VoteDirections.DownVote,
+  VoteDirections.NoVote,
+  VoteDirections.UpVote,
+];
 
 router.patch("/api/submissions/:submissionId", async (context) => {
   const { request, response, params } = context;
@@ -13,8 +20,16 @@ router.patch("/api/submissions/:submissionId", async (context) => {
     return;
   }
 
-  const { submissionId } = params;
-  const submissionFilter = { _id: new Bson.ObjectId(submissionId) };
+  let submissionId: Bson.ObjectId;
+  try {
+    submissionId = new Bson.ObjectId(params.submissionId);
+  } catch {
+    console.error("Invalid submissionId");
+    response.status = 400;
+    return;
+  }
+
+  const submissionFilter = { _id: submissionId };
   const submission = await submissions.findOne(submissionFilter);
   if (!submission) {
     console.error("Submission does not exist");
@@ -23,66 +38,54 @@ router.patch("/api/submissions/:submissionId", async (context) => {
   }
 
   const { direction: newVoteDirection, userId: anyUserId } = await result.value;
-  const userId = anyUserId as string;
-  if (!userId) {
-    console.error("No user id");
+
+  if (!voteDirections.includes(newVoteDirection)) {
+    console.error("Invalid vote direction");
     response.status = 400;
     return;
   }
 
-  const oldVoteDirection = submission.votes[userId] ?? VoteDirections.NoVote;
+  let userId: Bson.ObjectId;
+  try {
+    userId = new Bson.ObjectId(anyUserId);
+  } catch {
+    console.error("Invalid userId");
+    response.status = 400;
+    return;
+  }
+
+  const voteFilter = { submissionId, userId };
+  const vote = await votes.findOne(voteFilter);
+  const oldVoteDirection = vote?.direction ?? VoteDirections.NoVote;
   if (oldVoteDirection === newVoteDirection) {
-    console.error("Vote direction must change");
+    console.error("The voteDirection must be different");
     response.status = 400;
     return;
   }
 
-  const submissionPatch = {
-    upVotes: submission.upVotes,
-    downVotes: submission.downVotes,
-    votes: {
-      ...submission.votes,
-      [userId]: newVoteDirection,
-    },
-  };
-
-  // Remove previous vote
-  switch (oldVoteDirection) {
-    case (VoteDirections.DownVote):
-      submissionPatch.downVotes--;
-      break;
-    case (VoteDirections.UpVote):
-      submissionPatch.upVotes--;
-      break;
+  // Update vote
+  if (newVoteDirection === VoteDirections.NoVote) {
+    votes.deleteOne(voteFilter);
+  } else {
+    votes.updateOne(voteFilter, { $set: { direction: newVoteDirection } });
   }
 
-  // Add new vote
-  switch (newVoteDirection) {
-    case (VoteDirections.DownVote):
-      submissionPatch.downVotes++;
-      break;
-    case (VoteDirections.NoVote):
-      delete submissionPatch.votes[userId];
-      break;
-    case (VoteDirections.UpVote):
-      submissionPatch.upVotes++;
-      break;
-    default:
-      console.log("Invalid vote direction");
-      response.status = 400;
-      return;
-  }
-
-  // Update votes
+  // Update submission vote counts
+  const upVotes = submission.upVotes +
+    +(newVoteDirection === VoteDirections.UpVote) -
+    +(oldVoteDirection === VoteDirections.UpVote);
+  const downVotes = submission.downVotes +
+    +(newVoteDirection === VoteDirections.DownVote) -
+    +(oldVoteDirection === VoteDirections.DownVote);
   submissions.updateOne(
     submissionFilter,
-    { $set: submissionPatch },
+    { $set: { upVotes, downVotes } },
   );
 
   // Publish message
   submissionVotedPublisher.publish({
-    submissionId,
-    userId,
+    submissionId: submissionId.toHexString(),
+    userId: userId.toHexString(),
     direction: newVoteDirection,
   });
 
