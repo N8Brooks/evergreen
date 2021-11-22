@@ -1,5 +1,5 @@
-import { Bson, Router, VoteDirections } from "../deps.ts";
-import { submissionCreatedPublisher } from "../events.ts/submission_created_publisher.ts";
+import { Bson, Router } from "../deps.ts";
+import { submissionCreatedPublisher } from "../events/submission_created_publisher.ts";
 import { submissions } from "../models/submissions.ts";
 
 const router = new Router();

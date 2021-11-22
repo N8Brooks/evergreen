@@ -1,5 +1,5 @@
 import { Bson, Router, VoteDirections } from "../deps.ts";
-import { submissionVotedPublisher } from "../events.ts/submission_voted_publisher.ts";
+import { submissionVotedPublisher } from "../events/submission_voted_publisher.ts";
 import { submissions } from "../models/submissions.ts";
 import { votes } from "../models/votes.ts";
 

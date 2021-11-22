@@ -1,4 +1,3 @@
-import { VoteDirections } from "../deps.ts";
 import { mongoClient } from "./mongo_client.ts";
 
 const db = mongoClient.database("submissions");
