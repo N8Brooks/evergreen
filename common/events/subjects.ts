@@ -3,4 +3,6 @@ export enum Subjects {
   SubmissionVoted = "submission:voted",
 
   TopicCreated = "topic:created",
+
+  UserCreated = "user:created",
 }
