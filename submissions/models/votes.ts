@@ -1,4 +1,4 @@
-import { VoteDirections } from "../deps.ts";
+import { IndexOptions, VoteDirections } from "../deps.ts";
 import { mongoClient } from "./mongo_client.ts";
 
 const db = mongoClient.database("votes");
@@ -16,4 +16,17 @@ export interface VoteSchema {
   direction: Omit<VoteDirections, VoteDirections.NoVote>;
 }
 
-export const votes = db.collection<VoteSchema>("votes");
+const votes = db.collection<VoteSchema>("votes");
+
+/** Many to many userId-submissionId must be unique */
+const userIdSubmissionIdIndex: IndexOptions = {
+  key: { userId: 1, submissionId: 1 },
+  name: "_userIdSubmissionId",
+  unique: true,
+};
+
+votes.createIndexes({
+  indexes: [userIdSubmissionIdIndex],
+});
+
+export { votes };
