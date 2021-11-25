@@ -1,4 +1,5 @@
 import { Router } from "../deps.ts";
+import { userCreatedPublisher } from "../events/user_created_publisher.ts";
 import { users } from "../models/users.ts";
 
 const router = new Router();
@@ -25,6 +26,11 @@ router.post("/api/users", async (context) => {
   const id = await users.insertOne({
     upVotes: 0,
     downVotes: 0,
+    name,
+  });
+
+  userCreatedPublisher.publish({
+    id: `${id}`,
     name,
   });
 
