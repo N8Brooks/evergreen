@@ -6,6 +6,7 @@ export * from "./events/submission_created_event.ts";
 export * from "./events/submission_voted_event.ts";
 export * from "./events/topic_created_event.ts";
 export * from "./events/user_created_event.ts";
+export * from "./types/languages.ts";
 export * from "./types/vote_directions.ts";
 export * from "./types/vote_sort_keys.ts";
 export * from "./models/connect_mongo_client_with_retries.ts";
