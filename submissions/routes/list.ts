@@ -3,16 +3,19 @@ import { submissions } from "../models/submissions.ts";
 
 const router = new Router();
 
-router.get("/api/topics/:topicId/submissions", async ({ params, response }) => {
-  const topicId = params?.topicId;
+router.get(
+  "/api/topics/:topicName/submissions",
+  async ({ params, response }) => {
+    const topicId = params?.topicId;
 
-  if (!topicId) {
-    console.error("No parent topic");
-    response.status = 400;
-    return;
-  }
+    if (!topicId) {
+      console.error("No parent topic");
+      response.status = 400;
+      return;
+    }
 
-  response.body = await submissions.find({ topicId }).toArray();
-});
+    response.body = await submissions.find({ topicId }).toArray();
+  },
+);
 
 export { router as listSubmissionsRouter };
