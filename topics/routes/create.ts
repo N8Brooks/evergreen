@@ -1,4 +1,5 @@
-import { Router } from "../deps.ts";
+import { Bson, Router } from "../deps.ts";
+import { topicCreatedPublisher } from "../events/topic_created_publisher.ts";
 import { topics } from "../models/topics.ts";
 
 const router = new Router();
@@ -38,6 +39,13 @@ router.post("/api/topics", async ({ request, response }) => {
   const id = await topics.insertOne({
     upVotes: 0,
     downVotes: 0,
+    description,
+    name,
+    userId,
+  }) as Bson.ObjectId;
+
+  topicCreatedPublisher.publish({
+    id: id.toHexString(),
     description,
     name,
     userId,
