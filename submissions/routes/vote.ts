@@ -22,16 +22,14 @@ router.patch("/api/submissions/:submissionId", async (context) => {
     return;
   }
 
-  let submissionId: Bson.ObjectId;
-  try {
-    submissionId = new Bson.ObjectId(params.submissionId);
-  } catch {
+  const { submissionId } = params;
+  if (!submissionId) {
     console.error("Invalid submissionId");
     response.status = 400;
     return;
   }
 
-  const submissionFilter = { _id: submissionId };
+  const submissionFilter = { _id: new Bson.ObjectId(submissionId) };
   const submission = await submissions.findOne(submissionFilter);
   if (!submission) {
     console.error("Submission does not exist");
@@ -39,7 +37,7 @@ router.patch("/api/submissions/:submissionId", async (context) => {
     return;
   }
 
-  const { direction: newVoteDirection, userId: anyUserId } = await result.value;
+  const { direction: newVoteDirection, userId } = await result.value;
 
   if (!VOTE_DIRECTIONS.includes(newVoteDirection)) {
     console.error("Invalid vote direction");
@@ -47,10 +45,7 @@ router.patch("/api/submissions/:submissionId", async (context) => {
     return;
   }
 
-  let userId: Bson.ObjectId;
-  try {
-    userId = new Bson.ObjectId(anyUserId);
-  } catch {
+  if (!userId) {
     console.error("Invalid userId");
     response.status = 400;
     return;
@@ -69,7 +64,9 @@ router.patch("/api/submissions/:submissionId", async (context) => {
   if (newVoteDirection === NoVote) {
     votes.deleteOne(voteFilter);
   } else {
-    votes.updateOne(voteFilter, { $set: { direction: newVoteDirection } });
+    votes.updateOne(voteFilter, {
+      $set: { direction: newVoteDirection },
+    }, { upsert: true });
   }
 
   // Update submission vote keys
@@ -82,12 +79,13 @@ router.patch("/api/submissions/:submissionId", async (context) => {
   submissions.updateOne(
     submissionFilter,
     { $set: voteSortKeys },
+    { upsert: true },
   );
 
   // Publish message
   submissionVotedPublisher.publish({
-    submissionId: submissionId.toHexString(),
-    userId: userId.toHexString(),
+    submissionId,
+    userId: userId,
     direction: newVoteDirection,
   });
 
