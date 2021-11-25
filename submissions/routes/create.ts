@@ -2,10 +2,11 @@ import { VoteSortKeysBuilder } from "../deps.ts";
 import { Bson, Router } from "../deps.ts";
 import { submissionCreatedPublisher } from "../events/submission_created_publisher.ts";
 import { submissions } from "../models/submissions.ts";
+import { topics } from "../models/topics.ts";
 
 const router = new Router();
 
-router.post("/api/topics/:topicId/submissions", async (context) => {
+router.post("/api/topics/:topicName/submissions", async (context) => {
   const { params, request, response } = context;
   const result = request.body();
   if (result.type !== "json") {
@@ -14,11 +15,21 @@ router.post("/api/topics/:topicId/submissions", async (context) => {
     return;
   }
 
-  const topicId = params?.topicId;
+  const topicName = params?.topicName;
 
-  if (!topicId) {
-    console.error("No parent topic");
+  if (!topicName) {
+    console.error("No topic name");
     response.status = 400;
+    return;
+  }
+
+  const topic = await topics.findOne({
+    topicName,
+  });
+
+  if (!topic) {
+    console.error("Topic name does not exist");
+    response.status = 404;
     return;
   }
 
@@ -50,6 +61,7 @@ router.post("/api/topics/:topicId/submissions", async (context) => {
     return;
   }
 
+  const topicId = topic._id.toString();
   const objectId = await submissions.insertOne({
     ...VoteSortKeysBuilder.default,
     topicId,
