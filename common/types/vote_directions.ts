@@ -1,3 +1,4 @@
+/** Decrement, no change, increment */
 export enum VoteDirections {
   /** Decrement score */
   DownVote = -1,
@@ -8,3 +9,10 @@ export enum VoteDirections {
   /** Increment score */
   UpVote = 1,
 }
+
+/** Array of all `VoteDirections` */
+export const VOTE_DIRECTIONS = [
+  VoteDirections.DownVote,
+  VoteDirections.NoVote,
+  VoteDirections.UpVote,
+];
