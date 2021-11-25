@@ -1,15 +1,17 @@
-import { Bson, Router, VoteDirections } from "../deps.ts";
+import {
+  Bson,
+  Router,
+  VOTE_DIRECTIONS,
+  VoteDirections,
+  VoteSortKeysBuilder,
+} from "../deps.ts";
 import { submissionVotedPublisher } from "../events/submission_voted_publisher.ts";
 import { submissions } from "../models/submissions.ts";
 import { votes } from "../models/votes.ts";
 
-const router = new Router();
+const { NoVote } = VoteDirections;
 
-const voteDirections = [
-  VoteDirections.DownVote,
-  VoteDirections.NoVote,
-  VoteDirections.UpVote,
-];
+const router = new Router();
 
 router.patch("/api/submissions/:submissionId", async (context) => {
   const { request, response, params } = context;
@@ -39,7 +41,7 @@ router.patch("/api/submissions/:submissionId", async (context) => {
 
   const { direction: newVoteDirection, userId: anyUserId } = await result.value;
 
-  if (!voteDirections.includes(newVoteDirection)) {
+  if (!VOTE_DIRECTIONS.includes(newVoteDirection)) {
     console.error("Invalid vote direction");
     response.status = 400;
     return;
@@ -56,7 +58,7 @@ router.patch("/api/submissions/:submissionId", async (context) => {
 
   const voteFilter = { submissionId, userId };
   const vote = await votes.findOne(voteFilter);
-  const oldVoteDirection = vote?.direction ?? VoteDirections.NoVote;
+  const oldVoteDirection = (vote?.direction ?? NoVote) as VoteDirections;
   if (oldVoteDirection === newVoteDirection) {
     console.error("The voteDirection must be different");
     response.status = 400;
@@ -64,22 +66,22 @@ router.patch("/api/submissions/:submissionId", async (context) => {
   }
 
   // Update vote
-  if (newVoteDirection === VoteDirections.NoVote) {
+  if (newVoteDirection === NoVote) {
     votes.deleteOne(voteFilter);
   } else {
     votes.updateOne(voteFilter, { $set: { direction: newVoteDirection } });
   }
 
-  // Update submission vote counts
-  const upVotes = submission.upVotes +
-    +(newVoteDirection === VoteDirections.UpVote) -
-    +(oldVoteDirection === VoteDirections.UpVote);
-  const downVotes = submission.downVotes +
-    +(newVoteDirection === VoteDirections.DownVote) -
-    +(oldVoteDirection === VoteDirections.DownVote);
+  // Update submission vote keys
+  const voteSortKeys = new VoteSortKeysBuilder({
+    oldDownVotes: submission.downVotes,
+    oldUpVotes: submission.upVotes,
+    oldVoteDirection,
+    newVoteDirection,
+  });
   submissions.updateOne(
     submissionFilter,
-    { $set: { upVotes, downVotes } },
+    { $set: voteSortKeys },
   );
 
   // Publish message

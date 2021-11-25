@@ -1,3 +1,4 @@
+import { VoteSortKeysBuilder } from "../deps.ts";
 import { Bson, Router } from "../deps.ts";
 import { submissionCreatedPublisher } from "../events/submission_created_publisher.ts";
 import { submissions } from "../models/submissions.ts";
@@ -50,8 +51,7 @@ router.post("/api/topics/:topicId/submissions", async (context) => {
   }
 
   const objectId = await submissions.insertOne({
-    upVotes: 0,
-    downVotes: 0,
+    ...VoteSortKeysBuilder.default,
     topicId,
     userId,
     title,

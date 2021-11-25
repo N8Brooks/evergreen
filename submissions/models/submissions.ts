@@ -5,12 +5,6 @@ const db = mongoClient.database("submissions");
 export interface SubmissionSchema {
   _id: { $oid: string };
 
-  /** Total up votes */
-  upVotes: number;
-
-  /** Total down votes */
-  downVotes: number;
-
   /** Reference to topic */
   topicId: string;
 
@@ -22,6 +16,21 @@ export interface SubmissionSchema {
 
   /** Associated url */
   url?: string;
+
+  /** Total up votes */
+  upVotes: number;
+
+  /** Total down votes */
+  downVotes: number;
+
+  /** Controversy sort */
+  controversy: number;
+
+  /** Confidence sort */
+  confidence: number;
+
+  /** Difference of votes */
+  score: number;
 }
 
 export const submissions = db.collection<SubmissionSchema>("submissions");
