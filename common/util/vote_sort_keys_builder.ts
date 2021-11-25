@@ -11,7 +11,7 @@ const Z_SCORE_2 = Z_SCORE * Z_SCORE;
 export interface VoteSortKeysBuilderOptions {
   oldDownVotes: number;
   oldUpVotes: number;
-  oldVoteDirection: VoteDirections;
+  oldVoteDirection: Omit<VoteDirections, VoteDirections.NoVote>;
   newVoteDirection: VoteDirections;
 }
 
