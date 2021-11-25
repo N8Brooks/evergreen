@@ -12,9 +12,16 @@ router.post("/api/topics", async ({ request, response }) => {
   }
 
   const {
+    description,
     name,
     userId,
   } = await result.value;
+
+  if (!description) {
+    console.error("Empty description");
+    response.status = 400;
+    return;
+  }
 
   if (!name) {
     console.error("Empty name");
@@ -31,6 +38,7 @@ router.post("/api/topics", async ({ request, response }) => {
   const id = await topics.insertOne({
     upVotes: 0,
     downVotes: 0,
+    description,
     name,
     userId,
   });

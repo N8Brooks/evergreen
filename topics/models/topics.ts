@@ -4,11 +4,20 @@ const db = mongoClient.database("topics");
 
 export interface TopicSchema {
   _id: { $oid: string };
+
+  /** Topic name */
   name: string;
+
+  /** User who created the topic */
   userId: string;
-  // description: string;
-  // submissions;
+
+  /** Topic description */
+  description: string;
+
+  /** Total up votes within topic */
   upVotes: number;
+
+  /** Total down votes within topic */
   downVotes: number;
 }
 
