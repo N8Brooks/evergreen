@@ -7,9 +7,9 @@ WORKDIR /app
 USER deno
 
 COPY deps.ts .
-RUN deno cache deps.ts
+RUN deno cache --reload --unstable deps.ts
 
 ADD . .
-RUN deno cache main.ts
+RUN deno cache --unstable main.ts
 
-CMD ["run", "--allow-net", "--allow-env", "--watch", "main.ts"]
+CMD ["run", "--allow-net", "--allow-env", "--watch", "--unstable", "main.ts"]
