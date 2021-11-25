@@ -7,7 +7,7 @@ const Z_SCORE = 1.96;
 /** Z score squared helper */
 const Z_SCORE_2 = Z_SCORE * Z_SCORE;
 
-/** Destructured options parameters for `VoteSortKeysBuilder` */
+/** Destructured option parameters for `VoteSortKeysBuilder` */
 export interface VoteSortKeysBuilderOptions {
   oldDownVotes: number;
   oldUpVotes: number;
