@@ -15,7 +15,7 @@ router.post("/api/topics", async ({ request, response }) => {
   const {
     description,
     name,
-    userId,
+    userName,
   } = await result.value;
 
   if (!description) {
@@ -30,7 +30,7 @@ router.post("/api/topics", async ({ request, response }) => {
     return;
   }
 
-  if (!userId) {
+  if (!userName) {
     console.error("No topic author");
     response.status = 400;
     return;
@@ -41,17 +41,16 @@ router.post("/api/topics", async ({ request, response }) => {
     createdAt,
     description,
     name,
-    userId,
+    userName,
     commentScore: 0,
     submissionScore: 0,
   }) as string;
 
   topicCreatedPublisher.publish({
-    id,
     createdAt,
-    description,
     name,
-    userId,
+    userName,
+    description,
   });
 
   response.body = { id };

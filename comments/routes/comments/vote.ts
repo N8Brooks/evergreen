@@ -36,7 +36,7 @@ router.patch("/api/comments/:commentId", async (context) => {
     return;
   }
 
-  const { direction: newVoteDirection, userId } = await result.value;
+  const { direction: newVoteDirection, userName } = await result.value;
 
   if (!VOTE_DIRECTIONS.includes(newVoteDirection)) {
     console.error("Invalid vote direction");
@@ -44,13 +44,13 @@ router.patch("/api/comments/:commentId", async (context) => {
     return;
   }
 
-  if (!userId) {
-    console.error("Invalid userId");
+  if (!userName) {
+    console.error("Invalid userName");
     response.status = 400;
     return;
   }
 
-  const voteFilter = { commentId, userId };
+  const voteFilter = { commentId, userName };
   const vote = await votes.findOne(voteFilter);
   const oldVoteDirection = (vote?.direction ?? NoVote) as VoteDirections;
   if (oldVoteDirection === newVoteDirection) {
@@ -82,11 +82,11 @@ router.patch("/api/comments/:commentId", async (context) => {
 
   // Publish message
   const { upVoteDelta, downVoteDelta } = voteSortKeysBuilder;
-  const { topicId } = comment;
+  const { topicName } = comment;
   commentVotedPublisher.publish({
     commentId,
-    userId,
-    topicId,
+    userName,
+    topicName,
     upVoteDelta,
     downVoteDelta,
   });

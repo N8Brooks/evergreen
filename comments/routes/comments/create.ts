@@ -29,7 +29,7 @@ router.post("/api/comments/:commentId/comments", async (context) => {
     return;
   }
 
-  const { text, userId, language } = await result.value;
+  const { text, userName, language } = await result.value;
 
   if (!text) {
     console.error("No comment text");
@@ -37,7 +37,7 @@ router.post("/api/comments/:commentId/comments", async (context) => {
     return;
   }
 
-  if (!userId) {
+  if (!userName) {
     console.error("No comment author");
     response.status = 400;
     return;
@@ -50,12 +50,12 @@ router.post("/api/comments/:commentId/comments", async (context) => {
   }
 
   const createdAt = new Date();
-  const { topicId, submissionId } = parent;
+  const { topicName, submissionId } = parent;
   const id = await comments.insertOne({
     createdAt,
     language,
-    topicId,
-    userId,
+    topicName,
+    userName,
     parentId,
     submissionId,
     text,
@@ -66,8 +66,8 @@ router.post("/api/comments/:commentId/comments", async (context) => {
     id,
     createdAt,
     language,
-    topicId,
-    userId,
+    topicName,
+    userName,
     parentId,
     submissionId,
     text,

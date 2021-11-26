@@ -8,12 +8,12 @@ class CommentVotedSubscriber extends Subscriber<CommentVotedEvent> {
   queue = QUEUE;
 
   onMessage(message: CommentVotedEvent["message"]): void {
-    const { userId, upVoteDelta, downVoteDelta } = message;
+    const { userName, upVoteDelta, downVoteDelta } = message;
     const debug =
-      `Comment vote received for ${userId}: ${upVoteDelta}, ${downVoteDelta}`;
+      `Comment vote received for ${userName}: ${upVoteDelta}, ${downVoteDelta}`;
     console.log(debug);
     users.updateOne(
-      { userId },
+      { userName },
       { $inc: { commentScore: upVoteDelta - downVoteDelta } },
     );
   }

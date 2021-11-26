@@ -7,7 +7,7 @@ export interface SubmissionSchema {
   _id: string;
 
   /** Reference to topic */
-  topicId: string;
+  topicName: string;
 }
 
 export const submissions = db.collection<SubmissionSchema>("submissions");

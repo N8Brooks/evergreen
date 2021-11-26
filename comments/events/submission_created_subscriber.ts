@@ -11,12 +11,12 @@ class SubmissionCreatedSubscriber extends Subscriber<SubmissionCreatedEvent> {
     console.log("New submission", message.name);
     const {
       id,
-      topicId,
+      topicName,
     } = message;
 
     submissions.insertOne({
       _id: id,
-      topicId,
+      topicName,
     });
   }
 }

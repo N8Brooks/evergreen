@@ -32,7 +32,6 @@ router.post("/api/users", async (context) => {
   }) as string;
 
   userCreatedPublisher.publish({
-    id,
     createdAt,
     name,
   });

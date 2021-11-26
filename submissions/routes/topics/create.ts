@@ -35,7 +35,7 @@ router.post("/api/topics/:topicName/submissions", async (context) => {
   const {
     name,
     url,
-    userId,
+    userName,
     language,
   } = await result.value;
 
@@ -55,8 +55,8 @@ router.post("/api/topics/:topicName/submissions", async (context) => {
     return;
   }
 
-  if (!userId) {
-    console.error("No submission author");
+  if (!userName) {
+    console.error("No user name");
     response.status = 400;
     return;
   }
@@ -68,13 +68,11 @@ router.post("/api/topics/:topicName/submissions", async (context) => {
   }
 
   const createdAt = new Date();
-  const topicId = topic._id;
   const id = await submissions.insertOne({
     createdAt,
     language,
-    topicId,
     topicName,
-    userId,
+    userName,
     name,
     url,
     commentCount: 0,
@@ -85,8 +83,8 @@ router.post("/api/topics/:topicName/submissions", async (context) => {
     id,
     createdAt,
     language,
-    topicId,
-    userId,
+    topicName,
+    userName,
     name,
     url,
   });

@@ -17,7 +17,7 @@ export interface TopicSchema {
   name: string;
 
   /** User who created the topic */
-  userId: string;
+  userName: string;
 
   /** Topic description */
   description: string;

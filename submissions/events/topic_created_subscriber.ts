@@ -10,17 +10,15 @@ class TopicCreatedSubscriber extends Subscriber<TopicCreatedEvent> {
   onMessage(message: TopicCreatedEvent["message"]): void {
     console.log("New topic", message.name);
     const {
-      id,
       description,
       name,
-      userId,
+      userName,
     } = message;
 
     topics.insertOne({
-      _id: id,
       description,
       name,
-      userId,
+      userName,
     });
   }
 }

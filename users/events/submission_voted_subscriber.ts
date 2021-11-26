@@ -8,12 +8,12 @@ class SubmissionVotedSubscriber extends Subscriber<SubmissionVotedEvent> {
   queue = QUEUE;
 
   onMessage(message: SubmissionVotedEvent["message"]): void {
-    const { userId, upVoteDelta, downVoteDelta } = message;
+    const { userName, upVoteDelta, downVoteDelta } = message;
     const debug =
-      `Submission vote received for ${userId}: ${upVoteDelta}, ${downVoteDelta}`;
+      `Submission vote received for ${userName}: ${upVoteDelta}, ${downVoteDelta}`;
     console.log(debug);
     users.updateOne(
-      { userId },
+      { userName },
       { $inc: { submissionScore: upVoteDelta - downVoteDelta } },
     );
   }

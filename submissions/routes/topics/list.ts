@@ -8,6 +8,8 @@ router.get(
   async ({ params, response }) => {
     const { topicName } = params;
 
+    // TODO: check if topic exists here
+
     if (!topicName) {
       console.error("No parent topic name");
       response.status = 400;

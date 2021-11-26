@@ -17,10 +17,10 @@ export interface CommentSchema {
   language: Languages;
 
   /** The topic this is associated with */
-  topicId: string;
+  topicName: string;
 
   /** Comment author */
-  userId: string;
+  userName: string;
 
   /** The optional comment this is replying to */
   parentId?: string;
