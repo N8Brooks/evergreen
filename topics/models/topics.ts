@@ -4,7 +4,14 @@ import { IndexOptions } from "../deps.ts";
 const db = mongoClient.database("topics");
 
 export interface TopicSchema {
-  _id: { $oid: string };
+  /** Topic id */
+  _id: string;
+
+  /** Creation date */
+  createdAt: Date;
+
+  /** Update date */
+  updatedAt?: Date;
 
   /** Topic name */
   name: string;

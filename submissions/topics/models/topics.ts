@@ -1,11 +1,10 @@
-import { IndexOptions } from "../deps.ts";
 import { mongoClient } from "./mongo_client.ts";
+import { IndexOptions } from "../deps.ts";
 
 const db = mongoClient.database("topics");
 
 export interface TopicSchema {
-  /** Topic id */
-  _id: string;
+  _id: { $oid: string };
 
   /** Topic name */
   name: string;
@@ -15,6 +14,12 @@ export interface TopicSchema {
 
   /** Topic description */
   description: string;
+
+  /** Total up votes within topic */
+  upVotes: number;
+
+  /** Total down votes within topic */
+  downVotes: number;
 }
 
 const topics = db.collection<TopicSchema>("topics");

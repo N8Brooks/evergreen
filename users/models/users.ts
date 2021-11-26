@@ -4,13 +4,23 @@ import { mongoClient } from "./mongo_client.ts";
 const db = mongoClient.database("users");
 
 export interface UserSchema {
-  _id: { $oid: string };
-  upVotes: number;
-  downVotes: number;
-  // topics: idk
-  // submissions: idk
-  // comments: idk;
+  /** User id */
+  _id: string;
+
+  /** Creation date */
+  createdAt: Date;
+
+  /** Updated date */
+  updatedAt?: Date;
+
+  /** User name */
   name: string;
+
+  /** Total up votes for user */
+  upVotes: number;
+
+  /** Total down votes for user */
+  downVotes: number;
 }
 
 const users = db.collection<UserSchema>("users");

@@ -4,7 +4,8 @@ import { mongoClient } from "./mongo_client.ts";
 const db = mongoClient.database("votes");
 
 export interface VoteSchema {
-  _id: { $oid: string };
+  /** Vote id */
+  _id: string;
 
   /** The user voting */
   userId: string;

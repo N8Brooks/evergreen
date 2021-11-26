@@ -1,5 +1,5 @@
-import { VoteSortKeysBuilder } from "../deps.ts";
-import { Bson, Router } from "../deps.ts";
+import { LANGUAGES, VoteSortKeysBuilder } from "../deps.ts";
+import { Router } from "../deps.ts";
 import { submissionCreatedPublisher } from "../events/submission_created_publisher.ts";
 import { submissions } from "../models/submissions.ts";
 import { topics } from "../models/topics.ts";
@@ -34,13 +34,14 @@ router.post("/api/topics/:topicName/submissions", async (context) => {
   }
 
   const {
-    title,
+    name,
     url,
     userId,
+    language,
   } = await result.value;
 
-  if (!title) {
-    console.error("Empty title");
+  if (!name) {
+    console.error("Empty name");
     response.status = 400;
     return;
   }
@@ -61,21 +62,29 @@ router.post("/api/topics/:topicName/submissions", async (context) => {
     return;
   }
 
+  if (!LANGUAGES.has(language)) {
+    console.error("Unknown language");
+    response.status = 400;
+    return;
+  }
+
   const topicId = topic._id.toString();
-  const objectId = await submissions.insertOne({
-    ...VoteSortKeysBuilder.default,
+  const id = await submissions.insertOne({
+    createdAt: new Date(),
+    language,
     topicId,
     userId,
-    title,
+    name,
     url,
-  }) as Bson.ObjectId;
-  const id = objectId.toHexString();
+    commentCount: 0,
+    ...VoteSortKeysBuilder.default,
+  }) as string;
 
   submissionCreatedPublisher.publish({
     id,
     topicId,
     userId,
-    title,
+    title: name, // TODO: fix event properties
     url,
   });
 

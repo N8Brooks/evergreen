@@ -37,12 +37,11 @@ router.post("/api/topics", async ({ request, response }) => {
   }
 
   const id = await topics.insertOne({
-    createdAt: new Date(),
+    upVotes: 0,
+    downVotes: 0,
     description,
     name,
     userId,
-    upVotes: 0,
-    downVotes: 0,
   }) as Bson.ObjectId;
 
   topicCreatedPublisher.publish({

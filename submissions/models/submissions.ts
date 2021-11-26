@@ -1,9 +1,20 @@
+import { Languages } from "../deps.ts";
 import { mongoClient } from "./mongo_client.ts";
 
 const db = mongoClient.database("submissions");
 
 export interface SubmissionSchema {
-  _id: { $oid: string };
+  /** Submission id */
+  _id: string;
+
+  /** Creation time */
+  createdAt: Date;
+
+  /** Update time */
+  updatedAt?: Date;
+
+  /** Iso 639-1 code */
+  language: Languages;
 
   /** Reference to topic */
   topicId: string;
@@ -12,10 +23,13 @@ export interface SubmissionSchema {
   userId: string;
 
   /** Given title */
-  title: string;
+  name: string;
 
   /** Associated url */
   url?: string;
+
+  /** Count of comments */
+  commentCount: number; // TODO: events for this
 
   /** Total up votes */
   upVotes: number;

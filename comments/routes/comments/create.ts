@@ -1,4 +1,4 @@
-import { Router } from "../../deps.ts";
+import { LANGUAGES, Router, VoteSortKeysBuilder } from "../../deps.ts";
 import { comments } from "../../models/comments.ts";
 
 const router = new Router();
@@ -13,18 +13,18 @@ router.post("/api/comments/:commentId/comments", async (context) => {
     return;
   }
 
-  const parentCommentId = params?.commentId;
+  const parentId = params?.commentId;
 
-  if (!parentCommentId) {
+  if (!parentId) {
     console.error("No parent comment");
     response.status = 400;
     return;
   }
 
-  const { body, userId } = await result.value;
+  const { text, userId, language } = await result.value;
 
-  if (!body) {
-    console.error("No comment body");
+  if (!text) {
+    console.error("No comment text");
     response.status = 400;
     return;
   }
@@ -35,14 +35,21 @@ router.post("/api/comments/:commentId/comments", async (context) => {
     return;
   }
 
+  if (!LANGUAGES.has(language)) {
+    console.error("Unknown language");
+    response.status = 400;
+    return;
+  }
+
   const id = await comments.insertOne({
-    upVotes: 1,
-    downVotes: 0,
-    commentIds: [],
+    createdAt: new Date(),
+    language,
+    topicId: "_placeholder", // TODO: this is a placeholder
     userId,
-    submissionId: "",
-    parentId: parentCommentId,
-    body,
+    parentId,
+    submissionId: "_placeholder", // TODO: this is a placeholder
+    text,
+    ...VoteSortKeysBuilder.default,
   });
 
   response.body = { id };

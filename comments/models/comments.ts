@@ -1,21 +1,26 @@
+import { Languages } from "../deps.ts";
 import { mongoClient } from "./mongo_client.ts";
 
 const db = mongoClient.database("comments");
 
 export interface CommentSchema {
-  _id: { $oid: string };
+  /** Comment id */
+  _id: string;
 
-  /** Positive votes */
-  upVotes: number;
+  /** Creation time */
+  createdAt: Date;
 
-  /** Negative votes */
-  downVotes: number;
+  /** Update time */
+  updatedAt?: Date;
+
+  /** Iso 639-1 code */
+  language: Languages;
+
+  /** The topic this is associated with */
+  topicId: string;
 
   /** Comment author */
   userId: string;
-
-  /** Replies to this comment */
-  commentIds: string[];
 
   /** The optional comment this is replying to */
   parentId?: string;
@@ -23,8 +28,23 @@ export interface CommentSchema {
   /** The submission this is in */
   submissionId: string;
 
-  /** Comment text */
-  body: string;
+  /** Comment body */
+  text: string;
+
+  /** Positive votes */
+  upVotes: number;
+
+  /** Negative votes */
+  downVotes: number;
+
+  /** Confidence sort */
+  confidence: number;
+
+  /** Controversy sort */
+  controversy: number;
+
+  /** Difference of votes */
+  score: number;
 }
 
 export const comments = db.collection<CommentSchema>("comments");

@@ -1,4 +1,4 @@
-import { Bson, Router, VoteDirections } from "../../deps.ts";
+import { Router, VoteDirections } from "../../deps.ts";
 import { comments } from "../../models/comments.ts";
 
 const router = new Router();
@@ -13,11 +13,17 @@ router.patch("/api/comments/:commentId", async (context) => {
   }
 
   const { commentId } = params;
-  const filter = { _id: new Bson.ObjectId(commentId) };
+  if (!commentId) {
+    console.error("No comment id");
+    response.status = 400;
+    return;
+  }
+
+  const filter = { _id: commentId };
   const comment = await comments.findOne(filter);
   if (!comment) {
     console.error("Comment does not exist");
-    response.status = 400;
+    response.status = 404;
     return;
   }
 
