@@ -13,7 +13,7 @@ class SubmissionVotedSubscriber extends Subscriber<SubmissionVotedEvent> {
       `Submission vote received for ${userName}: ${upVoteDelta}, ${downVoteDelta}`;
     console.log(debug);
     users.updateOne(
-      { userName },
+      { name: userName },
       { $inc: { submissionScore: upVoteDelta - downVoteDelta } },
     );
   }

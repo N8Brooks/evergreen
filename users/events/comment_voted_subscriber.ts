@@ -13,7 +13,7 @@ class CommentVotedSubscriber extends Subscriber<CommentVotedEvent> {
       `Comment vote received for ${userName}: ${upVoteDelta}, ${downVoteDelta}`;
     console.log(debug);
     users.updateOne(
-      { userName },
+      { name: userName },
       { $inc: { commentScore: upVoteDelta - downVoteDelta } },
     );
   }
