@@ -1,5 +1,14 @@
-import { Router, VoteDirections } from "../../deps.ts";
+import {
+  Router,
+  VOTE_DIRECTIONS,
+  VoteDirections,
+  VoteSortKeysBuilder,
+} from "../../deps.ts";
+import { commentVotedPublisher } from "../../events/comment_voted_publisher.ts";
 import { comments } from "../../models/comments.ts";
+import { votes } from "../../models/votes.ts";
+
+const { NoVote } = VoteDirections;
 
 const router = new Router();
 
@@ -19,36 +28,64 @@ router.patch("/api/comments/:commentId", async (context) => {
     return;
   }
 
-  const filter = { _id: commentId };
-  const comment = await comments.findOne(filter);
+  const commentFilter = { _id: commentId };
+  const comment = await comments.findOne(commentFilter);
   if (!comment) {
     console.error("Comment does not exist");
-    response.status = 404;
+    response.status = 400;
     return;
   }
 
-  const { direction } = await result.value;
-  switch (direction) {
-    case VoteDirections.DownVote:
-      comments.updateOne(
-        filter,
-        { $set: { downVotes: comment.downVotes + 1 } },
-      );
-      break;
-    case VoteDirections.NoVote:
-      // May reverse previous vote in the future
-      break;
-    case VoteDirections.UpVote:
-      comments.updateOne(
-        filter,
-        { $set: { upVotes: comment.upVotes + 1 } },
-      );
-      break;
-    default:
-      console.error("Invalid vote direction");
-      response.status = 400;
-      return;
+  const { direction: newVoteDirection, userId } = await result.value;
+
+  if (!VOTE_DIRECTIONS.includes(newVoteDirection)) {
+    console.error("Invalid vote direction");
+    response.status = 400;
+    return;
   }
+
+  if (!userId) {
+    console.error("Invalid userId");
+    response.status = 400;
+    return;
+  }
+
+  const voteFilter = { commentId, userId };
+  const vote = await votes.findOne(voteFilter);
+  const oldVoteDirection = (vote?.direction ?? NoVote) as VoteDirections;
+  if (oldVoteDirection === newVoteDirection) {
+    console.error("The voteDirection must be different");
+    response.status = 400;
+    return;
+  }
+
+  // Update vote
+  if (newVoteDirection === NoVote) {
+    votes.deleteOne(voteFilter);
+  } else {
+    votes.updateOne(voteFilter, {
+      $set: { direction: newVoteDirection },
+    }, { upsert: true });
+  }
+
+  // Update submission vote keys
+  const voteSortKeys = new VoteSortKeysBuilder({
+    oldDownVotes: comment.downVotes,
+    oldUpVotes: comment.upVotes,
+    oldVoteDirection,
+    newVoteDirection,
+  });
+  comments.updateOne(
+    commentFilter,
+    { $set: voteSortKeys },
+  );
+
+  // Publish message
+  commentVotedPublisher.publish({
+    commentId,
+    userId: userId,
+    direction: newVoteDirection,
+  });
 
   response.body = {};
 });

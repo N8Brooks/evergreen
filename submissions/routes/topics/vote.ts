@@ -79,7 +79,6 @@ router.patch("/api/submissions/:submissionId", async (context) => {
   submissions.updateOne(
     submissionFilter,
     { $set: voteSortKeys },
-    { upsert: true },
   );
 
   // Publish message
