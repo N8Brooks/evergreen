@@ -8,7 +8,7 @@ export interface VoteSchema {
   _id: string;
 
   /** The user voting */
-  userId: string;
+  userName: string;
 
   /** The comment being voted on */
   commentId: string;
@@ -19,15 +19,15 @@ export interface VoteSchema {
 
 const votes = db.collection<VoteSchema>("votes");
 
-/** Many to many userId-commentId must be unique */
-const userIdCommentIdIndex: IndexOptions = {
-  key: { userId: 1, commentId: 1 },
-  name: "_userIdCommentId",
+/** Many to many userName-commentId must be unique */
+const userNameCommentIdIndex: IndexOptions = {
+  key: { userName: 1, commentId: 1 },
+  name: "_userNameCommentId",
   unique: true,
 };
 
 votes.createIndexes({
-  indexes: [userIdCommentIdIndex],
+  indexes: [userNameCommentIdIndex],
 });
 
 export { votes };
