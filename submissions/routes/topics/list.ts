@@ -16,8 +16,10 @@ router.get(
       return;
     }
 
+    // TODO: truncate results
+
     response.body = await submissions.find({ topicName }).toArray();
   },
 );
 
-export { router as listSubmissionsRouter };
+export { router as listSubmissionsByTopicRouter };

@@ -1,18 +1,20 @@
-import { listSubmissionsRouter } from "./routes/topics/list.ts";
 import { createSubmissionRouter } from "./routes/topics/create.ts";
 import { voteSubmissionRouter } from "./routes/topics/vote.ts";
 import { Application } from "./deps.ts";
 import { topicCreatedSubscriber } from "./events/topic_created_subscriber.ts";
-import { frontPageRouter } from "./routes/front_page.ts";
+import { listSubmissionsRouter } from "./routes/list.ts";
+import { listSubmissionsByTopicRouter } from "./routes/topics/list.ts";
+import { listSubmissionsByUserRouter } from "./routes/users/list.ts";
 
 topicCreatedSubscriber.listen();
 
 const app = new Application();
 
-app.use(listSubmissionsRouter.routes());
 app.use(createSubmissionRouter.routes());
 app.use(voteSubmissionRouter.routes());
-app.use(frontPageRouter.routes());
+app.use(listSubmissionsRouter.routes());
+app.use(listSubmissionsByTopicRouter.routes());
+app.use(listSubmissionsByUserRouter.routes());
 
 console.log("Listening on 8000");
 

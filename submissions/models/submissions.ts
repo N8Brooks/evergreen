@@ -47,4 +47,6 @@ export interface SubmissionSchema {
   score: number;
 }
 
+// TODO: submission indexes
+
 export const submissions = db.collection<SubmissionSchema>("submissions");

@@ -45,6 +45,13 @@ spec:
                 name: submissions-srv
                 port:
                   number: 8000
+          - path: /api/users/(\w*)/submissions
+            pathType: Prefix
+            backend:
+              service:
+                name: submissions-srv
+                port:
+                  number: 8000
           - path: /api/topics
             pathType: Prefix
             backend:
