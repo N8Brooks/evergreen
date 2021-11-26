@@ -42,8 +42,8 @@ router.post("/api/topics", async ({ request, response }) => {
     description,
     name,
     userId,
-    upVotes: 0,
-    downVotes: 0,
+    commentScore: 0,
+    submissionScore: 0,
   }) as string;
 
   topicCreatedPublisher.publish({

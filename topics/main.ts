@@ -1,6 +1,11 @@
 import { Application } from "./deps.ts";
+import { commentVotedSubscriber } from "./events/comment_voted_subscriber.ts";
+import { submissionVotedSubscriber } from "./events/submission_voted_subscriber.ts";
 import { createTopicRouter } from "./routes/create.ts";
 import { listTopicsRouter } from "./routes/list.ts";
+
+commentVotedSubscriber.listen();
+submissionVotedSubscriber.listen();
 
 const app = new Application();
 

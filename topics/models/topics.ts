@@ -22,11 +22,11 @@ export interface TopicSchema {
   /** Topic description */
   description: string;
 
-  /** Total up votes within topic */
-  upVotes: number;
+  /** Cumulative votes received from comments */
+  commentScore: number;
 
-  /** Total down votes within topic */
-  downVotes: number;
+  /** Cumulative votes received from submissions */
+  submissionScore: number;
 }
 
 const topics = db.collection<TopicSchema>("topics");
