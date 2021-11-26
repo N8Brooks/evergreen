@@ -4,9 +4,6 @@ import { Subjects } from "./subjects.ts";
 export interface TopicCreatedEvent extends Event {
   subject: Subjects.TopicCreated;
   message: {
-    /** Topic id */
-    id: string;
-
     /** Creation date */
     createdAt: Date;
 
