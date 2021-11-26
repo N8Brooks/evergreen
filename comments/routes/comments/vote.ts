@@ -69,7 +69,7 @@ router.patch("/api/comments/:commentId", async (context) => {
   }
 
   // Update submission vote keys
-  const voteSortKeys = new VoteSortKeysBuilder({
+  const voteSortKeysBuilder = new VoteSortKeysBuilder({
     oldDownVotes: comment.downVotes,
     oldUpVotes: comment.upVotes,
     oldVoteDirection,
@@ -77,14 +77,16 @@ router.patch("/api/comments/:commentId", async (context) => {
   });
   comments.updateOne(
     commentFilter,
-    { $set: voteSortKeys },
+    { $set: voteSortKeysBuilder.build() },
   );
 
   // Publish message
+  const { upVoteDelta, downVoteDelta } = voteSortKeysBuilder;
   commentVotedPublisher.publish({
     commentId,
-    userId: userId,
-    direction: newVoteDirection,
+    userId,
+    upVoteDelta,
+    downVoteDelta,
   });
 
   response.body = {};

@@ -70,7 +70,7 @@ router.patch("/api/submissions/:submissionId", async (context) => {
   }
 
   // Update submission vote keys
-  const voteSortKeys = new VoteSortKeysBuilder({
+  const voteSortKeysBuilder = new VoteSortKeysBuilder({
     oldDownVotes: submission.downVotes,
     oldUpVotes: submission.upVotes,
     oldVoteDirection,
@@ -78,14 +78,16 @@ router.patch("/api/submissions/:submissionId", async (context) => {
   });
   submissions.updateOne(
     submissionFilter,
-    { $set: voteSortKeys },
+    { $set: voteSortKeysBuilder.build() },
   );
 
   // Publish message
+  const { upVoteDelta, downVoteDelta } = voteSortKeysBuilder;
   submissionVotedPublisher.publish({
     submissionId,
-    userId: userId,
-    direction: newVoteDirection,
+    userId,
+    upVoteDelta,
+    downVoteDelta,
   });
 
   response.body = {};
