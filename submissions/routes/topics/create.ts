@@ -1,8 +1,7 @@
-import { LANGUAGES, VoteSortKeysBuilder } from "../deps.ts";
-import { Router } from "../deps.ts";
-import { submissionCreatedPublisher } from "../events/submission_created_publisher.ts";
-import { submissions } from "../models/submissions.ts";
-import { topics } from "../models/topics.ts";
+import { LANGUAGES, Router, VoteSortKeysBuilder } from "../../deps.ts";
+import { submissionCreatedPublisher } from "../../events/submission_created_publisher.ts";
+import { submissions } from "../../models/submissions.ts";
+import { topics } from "../../models/topics.ts";
 
 const router = new Router();
 
@@ -15,7 +14,7 @@ router.post("/api/topics/:topicName/submissions", async (context) => {
     return;
   }
 
-  const topicName = params?.topicName;
+  const { topicName } = params;
 
   if (!topicName) {
     console.error("No topic name");
@@ -24,7 +23,7 @@ router.post("/api/topics/:topicName/submissions", async (context) => {
   }
 
   const topic = await topics.findOne({
-    topicName,
+    name: topicName,
   });
 
   if (!topic) {
@@ -68,9 +67,10 @@ router.post("/api/topics/:topicName/submissions", async (context) => {
     return;
   }
 
-  const topicId = topic._id.toString();
+  const createdAt = new Date();
+  const topicId = topic._id;
   const id = await submissions.insertOne({
-    createdAt: new Date(),
+    createdAt,
     language,
     topicId,
     userId,
@@ -82,9 +82,11 @@ router.post("/api/topics/:topicName/submissions", async (context) => {
 
   submissionCreatedPublisher.publish({
     id,
+    createdAt,
+    language,
     topicId,
     userId,
-    title: name, // TODO: fix event properties
+    name,
     url,
   });
 

@@ -1,5 +1,6 @@
 import { LANGUAGES, Router, VoteSortKeysBuilder } from "../../deps.ts";
 import { comments } from "../../models/comments.ts";
+import { submissions } from "../../models/submissions.ts";
 
 const router = new Router();
 
@@ -15,11 +16,18 @@ router.post("/api/submissions/:submissionId/comments", async (context) => {
     return;
   }
 
-  const submissionId = params?.submissionId;
+  const { submissionId } = params;
 
   if (!submissionId) {
     console.error("No parent submission");
     response.status = 400;
+    return;
+  }
+
+  const submission = await submissions.findOne({ _id: submissionId });
+  if (!submission) {
+    console.error("Submission with that id does not exist");
+    response.status = 404;
     return;
   }
 
@@ -43,10 +51,11 @@ router.post("/api/submissions/:submissionId/comments", async (context) => {
     return;
   }
 
+  const { topicId } = submission;
   const id = await comments.insertOne({
     createdAt: new Date(),
     language,
-    topicId: "_placeholder", // TODO: this is a placeholder
+    topicId,
     userId,
     submissionId,
     text,

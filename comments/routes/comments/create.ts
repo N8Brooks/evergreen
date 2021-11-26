@@ -21,6 +21,13 @@ router.post("/api/comments/:commentId/comments", async (context) => {
     return;
   }
 
+  const parent = await comments.findOne({ _id: parentId });
+  if (!parent) {
+    console.error("No existing parent comment");
+    response.status = 404;
+    return;
+  }
+
   const { text, userId, language } = await result.value;
 
   if (!text) {
@@ -41,13 +48,15 @@ router.post("/api/comments/:commentId/comments", async (context) => {
     return;
   }
 
+  const createdAt = new Date();
+  const { topicId, submissionId } = parent;
   const id = await comments.insertOne({
-    createdAt: new Date(),
+    createdAt,
     language,
-    topicId: "_placeholder", // TODO: this is a placeholder
+    topicId,
     userId,
     parentId,
-    submissionId: "_placeholder", // TODO: this is a placeholder
+    submissionId,
     text,
     ...VoteSortKeysBuilder.default,
   });

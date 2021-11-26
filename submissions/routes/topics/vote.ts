@@ -4,10 +4,10 @@ import {
   VOTE_DIRECTIONS,
   VoteDirections,
   VoteSortKeysBuilder,
-} from "../deps.ts";
-import { submissionVotedPublisher } from "../events/submission_voted_publisher.ts";
-import { submissions } from "../models/submissions.ts";
-import { votes } from "../models/votes.ts";
+} from "../../deps.ts";
+import { submissionVotedPublisher } from "../../events/submission_voted_publisher.ts";
+import { submissions } from "../../models/submissions.ts";
+import { votes } from "../../models/votes.ts";
 
 const { NoVote } = VoteDirections;
 

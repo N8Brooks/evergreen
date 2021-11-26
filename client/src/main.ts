@@ -16,16 +16,16 @@ fetch(request, init)
   .then((submissions: any[]) => {
     const documentFragment = new DocumentFragment();
 
-    for (const { title, url, upVotes, downVotes } of submissions) {
+    for (const { name, url, score } of submissions) {
       const article = document.createElement("article");
 
-      const score = document.createElement("p");
-      score.innerText = upVotes - downVotes + "";
-      article.appendChild(score);
+      const displayScore = document.createElement("p");
+      displayScore.innerText = score + "";
+      article.appendChild(displayScore);
 
       const link = document.createElement("a");
       link.href = url;
-      link.innerText = title;
+      link.innerText = name;
       article.appendChild(link);
 
       documentFragment.appendChild(article);

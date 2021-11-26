@@ -18,6 +18,8 @@ spec:
           env:
             - name: MONGO_URI
               value: "mongodb://users-mongo-srv:27017/users"
+            - name: NATS_URL
+              value: "http://nats-srv:4222"
 ---
 apiVersion: v1
 kind: Service
