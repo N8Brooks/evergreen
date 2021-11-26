@@ -1,4 +1,5 @@
 import { LANGUAGES, Router, VoteSortKeysBuilder } from "../../deps.ts";
+import { commentCreatedPublisher } from "../../events/comment_created_publisher.ts";
 import { comments } from "../../models/comments.ts";
 
 const router = new Router();
@@ -59,6 +60,17 @@ router.post("/api/comments/:commentId/comments", async (context) => {
     submissionId,
     text,
     ...VoteSortKeysBuilder.default,
+  }) as string;
+
+  commentCreatedPublisher.publish({
+    id,
+    createdAt,
+    language,
+    topicId,
+    userId,
+    parentId,
+    submissionId,
+    text,
   });
 
   response.body = { id };

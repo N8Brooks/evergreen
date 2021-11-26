@@ -3,8 +3,6 @@ import { comments } from "../../models/comments.ts";
 
 const router = new Router();
 
-// TODO: should this be merged with comments/list.ts?
-
 router.get("/api/submissions/:submissionId/comments", async (context) => {
   const { response, params } = context;
   const submissionId = params?.submissionId;

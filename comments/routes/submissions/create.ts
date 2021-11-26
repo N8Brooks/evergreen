@@ -1,10 +1,9 @@
 import { LANGUAGES, Router, VoteSortKeysBuilder } from "../../deps.ts";
+import { commentCreatedPublisher } from "../../events/comment_created_publisher.ts";
 import { comments } from "../../models/comments.ts";
 import { submissions } from "../../models/submissions.ts";
 
 const router = new Router();
-
-// TODO: should this be merged with comments/create.ts?
 
 router.post("/api/submissions/:submissionId/comments", async (context) => {
   const { request, response, params } = context;
@@ -51,15 +50,26 @@ router.post("/api/submissions/:submissionId/comments", async (context) => {
     return;
   }
 
+  const createdAt = new Date();
   const { topicId } = submission;
   const id = await comments.insertOne({
-    createdAt: new Date(),
+    createdAt,
     language,
     topicId,
     userId,
     submissionId,
     text,
     ...VoteSortKeysBuilder.default,
+  }) as string;
+
+  commentCreatedPublisher.publish({
+    id,
+    createdAt,
+    language,
+    topicId,
+    userId,
+    submissionId,
+    text,
   });
 
   response.body = { id };
