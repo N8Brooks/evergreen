@@ -47,4 +47,6 @@ export interface CommentSchema {
   score: number;
 }
 
+// TODO: comment indexes
+
 export const comments = db.collection<CommentSchema>("comments");

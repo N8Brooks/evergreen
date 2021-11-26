@@ -13,6 +13,8 @@ router.get("/api/comments/:commentId/comments", async (context) => {
     return;
   }
 
+  // TODO: truncate results
+
   response.body = await comments.find({ parentId: commentId }).toArray();
 });
 
