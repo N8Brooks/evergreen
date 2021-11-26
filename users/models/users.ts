@@ -16,11 +16,11 @@ export interface UserSchema {
   /** User name */
   name: string;
 
-  /** Total up votes for user */
-  upVotes: number;
+  /** Cumulative votes received from comments */
+  commentScore: number;
 
-  /** Total down votes for user */
-  downVotes: number;
+  /** Cumulative votes received from submissions */
+  submissionScore: number;
 }
 
 const users = db.collection<UserSchema>("users");

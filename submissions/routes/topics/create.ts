@@ -73,6 +73,7 @@ router.post("/api/topics/:topicName/submissions", async (context) => {
     createdAt,
     language,
     topicId,
+    topicName,
     userId,
     name,
     url,

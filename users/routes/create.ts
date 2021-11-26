@@ -27,8 +27,8 @@ router.post("/api/users", async (context) => {
   const id = await users.insertOne({
     createdAt,
     name,
-    upVotes: 0,
-    downVotes: 0,
+    commentScore: 0,
+    submissionScore: 0,
   }) as string;
 
   userCreatedPublisher.publish({

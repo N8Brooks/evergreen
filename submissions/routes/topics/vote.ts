@@ -83,9 +83,11 @@ router.patch("/api/submissions/:submissionId", async (context) => {
 
   // Publish message
   const { upVoteDelta, downVoteDelta } = voteSortKeysBuilder;
+  const { topicId } = submission;
   submissionVotedPublisher.publish({
     submissionId,
     userId,
+    topicId,
     upVoteDelta,
     downVoteDelta,
   });

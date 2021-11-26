@@ -82,9 +82,11 @@ router.patch("/api/comments/:commentId", async (context) => {
 
   // Publish message
   const { upVoteDelta, downVoteDelta } = voteSortKeysBuilder;
+  const { topicId } = comment;
   commentVotedPublisher.publish({
     commentId,
     userId,
+    topicId,
     upVoteDelta,
     downVoteDelta,
   });
