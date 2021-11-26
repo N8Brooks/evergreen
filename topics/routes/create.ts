@@ -1,4 +1,4 @@
-import { Bson, Router } from "../deps.ts";
+import { Router } from "../deps.ts";
 import { topicCreatedPublisher } from "../events/topic_created_publisher.ts";
 import { topics } from "../models/topics.ts";
 
