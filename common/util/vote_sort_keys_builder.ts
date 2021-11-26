@@ -17,8 +17,10 @@ export interface VoteSortKeysBuilderOptions {
 
 /** Encapsulates data and getters for vote keys */
 export class VoteSortKeysBuilder {
-  upVotes: number;
-  downVotes: number;
+  readonly downVoteDelta: number;
+  readonly upVoteDelta: number;
+  readonly downVotes: number;
+  readonly upVotes: number;
 
   constructor({
     oldDownVotes,
@@ -26,13 +28,14 @@ export class VoteSortKeysBuilder {
     oldVoteDirection,
     newVoteDirection,
   }: VoteSortKeysBuilderOptions) {
-    // Inverse old vote direction and update with new vote direction
-    this.downVotes = oldDownVotes -
-      +(oldVoteDirection === VoteDirections.DownVote) +
-      +(newVoteDirection === VoteDirections.DownVote);
-    this.upVotes = oldUpVotes -
-      +(oldVoteDirection === VoteDirections.UpVote) +
-      +(newVoteDirection === VoteDirections.UpVote);
+    // Difference in votes
+    this.downVoteDelta = +(newVoteDirection === VoteDirections.DownVote) -
+      +(oldVoteDirection === VoteDirections.DownVote);
+    this.upVoteDelta = +(newVoteDirection === VoteDirections.UpVote) -
+      +(oldVoteDirection === VoteDirections.UpVote);
+    // Update vote counts
+    this.downVotes = oldDownVotes + this.downVoteDelta;
+    this.upVotes = oldUpVotes + this.upVoteDelta;
   }
 
   /** Builds sort keys from getters */

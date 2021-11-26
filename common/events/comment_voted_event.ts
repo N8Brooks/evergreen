@@ -13,7 +13,10 @@ export interface CommentVotedEvent extends Event {
     /** User doing the voting */
     userId: string;
 
-    /** Direction of the vote */
-    direction: VoteDirections;
+    /** Change in down votes */
+    downVoteDelta: number;
+
+    /** Change in up votes */
+    upVoteDelta: number;
   };
 }

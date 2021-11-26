@@ -1,5 +1,4 @@
 import { Subjects } from "./subjects.ts";
-import { VoteDirections } from "../types/vote_directions.ts";
 import { Event } from "./event.ts";
 
 export interface SubmissionVotedEvent extends Event {
@@ -13,7 +12,10 @@ export interface SubmissionVotedEvent extends Event {
     /** User doing the voting */
     userId: string;
 
-    /** Direction of the vote */
-    direction: VoteDirections;
+    /** Change in down votes */
+    downVoteDelta: number;
+
+    /** Change in up votes */
+    upVoteDelta: number;
   };
 }
