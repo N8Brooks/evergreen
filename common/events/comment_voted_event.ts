@@ -10,10 +10,10 @@ export interface CommentVotedEvent extends Event {
     commentId: string;
 
     /** User doing the voting */
-    userId: string;
+    userName: string;
 
     /** Relevant topic */
-    topicId: string;
+    topicName: string;
 
     /** Change in down votes */
     downVoteDelta: number;
