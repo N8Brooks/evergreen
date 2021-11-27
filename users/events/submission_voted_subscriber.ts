@@ -1,4 +1,4 @@
-import { Subjects, SubmissionVotedEvent, Subscriber } from "../deps.ts";
+import { log, Subjects, SubmissionVotedEvent, Subscriber } from "../deps.ts";
 import { users } from "../models/users.ts";
 import { QUEUE } from "./constants.ts";
 import { natsConnection } from "./nats_connection.ts";
@@ -9,9 +9,7 @@ class SubmissionVotedSubscriber extends Subscriber<SubmissionVotedEvent> {
 
   onMessage(message: SubmissionVotedEvent["message"]): void {
     const { userName, upVoteDelta, downVoteDelta } = message;
-    const debug =
-      `Submission vote received for ${userName}: ${upVoteDelta}, ${downVoteDelta}`;
-    console.log(debug);
+    log.debug(`Received submission voted event: ${message.submissionId}`);
     users.updateOne(
       { name: userName },
       { $inc: { submissionScore: upVoteDelta - downVoteDelta } },

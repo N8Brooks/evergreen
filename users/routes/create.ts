@@ -1,4 +1,4 @@
-import { Router } from "../deps.ts";
+import { log, Router } from "../deps.ts";
 import { userCreatedPublisher } from "../events/user_created_publisher.ts";
 import { users } from "../models/users.ts";
 
@@ -8,7 +8,7 @@ router.post("/api/users", async (context) => {
   const { request, response } = context;
   const result = request.body();
   if (result.type !== "json") {
-    console.error("That was not json");
+    log.warning("That was not json");
     response.status = 400;
     return;
   }
@@ -18,7 +18,7 @@ router.post("/api/users", async (context) => {
   } = await result.value;
 
   if (!name) {
-    console.error("Empty name");
+    log.warning("Empty name");
     response.status = 400;
     return;
   }
@@ -31,6 +31,7 @@ router.post("/api/users", async (context) => {
     submissionScore: 0,
   }) as string;
 
+  log.debug(`User ${name} created`);
   userCreatedPublisher.publish({
     createdAt,
     name,
