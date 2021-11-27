@@ -1,3 +1,5 @@
+// Set up logging
+import "./util/log_setup.ts";
 // events
 export * from "./events/comment_created_event.ts";
 export * from "./events/comment_voted_event.ts";

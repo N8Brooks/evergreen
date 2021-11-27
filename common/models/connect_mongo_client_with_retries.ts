@@ -1,4 +1,4 @@
-import { MongoClient } from "../deps.ts";
+import { log, MongoClient } from "../deps.ts";
 
 /** Throws error after failing to connect this many times */
 const MAXIMUM_CONNECTION_ATTEMPTS = 10;
@@ -16,14 +16,16 @@ export async function connectMongoClientWithRetries(
   do {
     try {
       connectionAttempts++;
+      log.info(
+        `MongoClient connection attempt ${connectionAttempts}/${MAXIMUM_CONNECTION_ATTEMPTS}`,
+      );
       await mongoClient.connect(mongoUri);
       isConnected = true;
     } catch (e) {
-      console.error(`Failed mongodb connection attempt #${connectionAttempts}`);
       if (connectionAttempts < MAXIMUM_CONNECTION_ATTEMPTS) {
-        console.error(e);
+        log.error(e);
       } else {
-        throw e;
+        log.critical(e);
       }
       await new Promise((res) => setTimeout(res, CONNECTION_ATTEMPT_DELAY));
     }
