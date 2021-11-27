@@ -1,4 +1,4 @@
-import { Application } from "./deps.ts";
+import { Application, log } from "./deps.ts";
 import { submissionCreatedSubscriber } from "./events/submission_created_subscriber.ts";
 import { createCommentCommentRouter } from "./routes/comments/create.ts";
 import { listCommentCommentsRouter } from "./routes/comments/list.ts";
@@ -16,6 +16,6 @@ app.use(voteCommentRouter.routes());
 app.use(createSubmissionCommentRouter.routes());
 app.use(listSubmissionCommentsRouter.routes());
 
-console.log("Listening on 8000");
+log.info("Listening on 8000");
 
 await app.listen({ port: 8000 });

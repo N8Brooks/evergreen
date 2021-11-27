@@ -1,4 +1,4 @@
-import { LANGUAGES, Router, VoteSortKeysBuilder } from "../../deps.ts";
+import { LANGUAGES, log, Router, VoteSortKeysBuilder } from "../../deps.ts";
 import { commentCreatedPublisher } from "../../events/comment_created_publisher.ts";
 import { comments } from "../../models/comments.ts";
 import { submissions } from "../../models/submissions.ts";
@@ -10,7 +10,7 @@ router.post("/api/submissions/:submissionId/comments", async (context) => {
 
   const result = request.body();
   if (result.type !== "json") {
-    console.error("That was not json");
+    log.warning("That was not json");
     response.status = 400;
     return;
   }
@@ -18,14 +18,14 @@ router.post("/api/submissions/:submissionId/comments", async (context) => {
   const { submissionId } = params;
 
   if (!submissionId) {
-    console.error("No parent submission");
+    log.warning("No parent submission");
     response.status = 400;
     return;
   }
 
   const submission = await submissions.findOne({ _id: submissionId });
   if (!submission) {
-    console.error("Submission with that id does not exist");
+    log.warning("Submission with that id does not exist");
     response.status = 404;
     return;
   }
@@ -33,19 +33,19 @@ router.post("/api/submissions/:submissionId/comments", async (context) => {
   const { text, userName, language } = await result.value;
 
   if (!text) {
-    console.error("No comment text");
+    log.warning("No comment text");
     response.status = 400;
     return;
   }
 
   if (!userName) {
-    console.error("No comment author");
+    log.warning("No comment author");
     response.status = 400;
     return;
   }
 
   if (!LANGUAGES.has(language)) {
-    console.error("Unknown language");
+    log.warning("Unknown language");
     response.status = 400;
     return;
   }
@@ -62,6 +62,7 @@ router.post("/api/submissions/:submissionId/comments", async (context) => {
     ...VoteSortKeysBuilder.default,
   }) as string;
 
+  log.debug(`User ${userName} commented ${id} on submission ${submissionId}`);
   commentCreatedPublisher.publish({
     id,
     createdAt,

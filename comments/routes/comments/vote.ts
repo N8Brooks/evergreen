@@ -1,4 +1,5 @@
 import {
+  log,
   Router,
   VOTE_DIRECTIONS,
   VoteDirections,
@@ -16,14 +17,14 @@ router.patch("/api/comments/:commentId", async (context) => {
   const { request, response, params } = context;
   const result = request.body();
   if (result.type !== "json") {
-    console.error("That was not json");
+    log.warning("That was not json");
     response.status = 400;
     return;
   }
 
   const { commentId } = params;
   if (!commentId) {
-    console.error("No comment id");
+    log.warning("No comment id");
     response.status = 400;
     return;
   }
@@ -31,7 +32,7 @@ router.patch("/api/comments/:commentId", async (context) => {
   const commentFilter = { _id: commentId };
   const comment = await comments.findOne(commentFilter);
   if (!comment) {
-    console.error("Comment does not exist");
+    log.warning("Comment does not exist");
     response.status = 400;
     return;
   }
@@ -39,13 +40,13 @@ router.patch("/api/comments/:commentId", async (context) => {
   const { direction: newVoteDirection, userName } = await result.value;
 
   if (!VOTE_DIRECTIONS.includes(newVoteDirection)) {
-    console.error("Invalid vote direction");
+    log.warning("Invalid vote direction");
     response.status = 400;
     return;
   }
 
   if (!userName) {
-    console.error("Invalid userName");
+    log.warning("Invalid userName");
     response.status = 400;
     return;
   }
@@ -54,7 +55,7 @@ router.patch("/api/comments/:commentId", async (context) => {
   const vote = await votes.findOne(voteFilter);
   const oldVoteDirection = (vote?.direction ?? NoVote) as VoteDirections;
   if (oldVoteDirection === newVoteDirection) {
-    console.error("The voteDirection must be different");
+    log.warning("The voteDirection must be different");
     response.status = 400;
     return;
   }
@@ -81,6 +82,9 @@ router.patch("/api/comments/:commentId", async (context) => {
   );
 
   // Publish message
+  log.debug(
+    `User ${userName} voted ${newVoteDirection} on comment ${commentId}`,
+  );
   const { upVoteDelta, downVoteDelta } = voteSortKeysBuilder;
   const { topicName } = comment;
   commentVotedPublisher.publish({

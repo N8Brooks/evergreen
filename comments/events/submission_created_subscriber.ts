@@ -1,4 +1,4 @@
-import { Subjects, SubmissionCreatedEvent, Subscriber } from "../deps.ts";
+import { log, Subjects, SubmissionCreatedEvent, Subscriber } from "../deps.ts";
 import { submissions } from "../models/submissions.ts";
 import { QUEUE } from "./constants.ts";
 import { natsConnection } from "./nats_connection.ts";
@@ -8,7 +8,7 @@ class SubmissionCreatedSubscriber extends Subscriber<SubmissionCreatedEvent> {
   queue = QUEUE;
 
   onMessage(message: SubmissionCreatedEvent["message"]): void {
-    console.log("New submission", message.name);
+    log.debug(`Received submission created event: ${message.name}`);
     const {
       id,
       topicName,

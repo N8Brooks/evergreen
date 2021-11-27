@@ -1,4 +1,4 @@
-import { Router } from "../../deps.ts";
+import { log, Router } from "../../deps.ts";
 import { comments } from "../../models/comments.ts";
 
 const router = new Router();
@@ -8,7 +8,7 @@ router.get("/api/comments/:commentId/comments", async (context) => {
   const commentId = params?.commentId;
 
   if (!commentId) {
-    console.error("No parent comment");
+    log.warning("No parent comment");
     response.status = 400;
     return;
   }

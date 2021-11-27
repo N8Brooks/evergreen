@@ -1,4 +1,4 @@
-import { Router } from "../../deps.ts";
+import { log, Router } from "../../deps.ts";
 import { comments } from "../../models/comments.ts";
 
 const router = new Router();
@@ -10,7 +10,7 @@ router.get("/api/submissions/:submissionId/comments", async (context) => {
   const submissionId = params?.submissionId;
 
   if (!submissionId) {
-    console.error("No parent submission");
+    log.warning("No parent submission");
     response.status = 400;
     return;
   }

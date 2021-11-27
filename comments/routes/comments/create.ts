@@ -1,4 +1,4 @@
-import { LANGUAGES, Router, VoteSortKeysBuilder } from "../../deps.ts";
+import { LANGUAGES, log, Router, VoteSortKeysBuilder } from "../../deps.ts";
 import { commentCreatedPublisher } from "../../events/comment_created_publisher.ts";
 import { comments } from "../../models/comments.ts";
 
@@ -9,7 +9,7 @@ router.post("/api/comments/:commentId/comments", async (context) => {
 
   const result = request.body();
   if (result.type !== "json") {
-    console.error("That was not json");
+    log.warning("That was not json");
     response.status = 400;
     return;
   }
@@ -17,14 +17,14 @@ router.post("/api/comments/:commentId/comments", async (context) => {
   const parentId = params?.commentId;
 
   if (!parentId) {
-    console.error("No parent comment");
+    log.warning("No parent comment");
     response.status = 400;
     return;
   }
 
   const parent = await comments.findOne({ _id: parentId });
   if (!parent) {
-    console.error("No existing parent comment");
+    log.warning("No existing parent comment");
     response.status = 404;
     return;
   }
@@ -32,19 +32,19 @@ router.post("/api/comments/:commentId/comments", async (context) => {
   const { text, userName, language } = await result.value;
 
   if (!text) {
-    console.error("No comment text");
+    log.warning("No comment text");
     response.status = 400;
     return;
   }
 
   if (!userName) {
-    console.error("No comment author");
+    log.warning("No comment author");
     response.status = 400;
     return;
   }
 
   if (!LANGUAGES.has(language)) {
-    console.error("Unknown language");
+    log.warning("Unknown language");
     response.status = 400;
     return;
   }
@@ -62,6 +62,7 @@ router.post("/api/comments/:commentId/comments", async (context) => {
     ...VoteSortKeysBuilder.default,
   }) as string;
 
+  log.debug(`User ${userName} commented ${id} on comment ${parentId}`);
   commentCreatedPublisher.publish({
     id,
     createdAt,
