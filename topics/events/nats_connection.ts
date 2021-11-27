@@ -1,14 +1,15 @@
-import { nats } from "../deps.ts";
+import { log, nats } from "../deps.ts";
 
 /** Expects NATS_URL to be defined */
 const NATS_URL = Deno.env.get("NATS_URL");
 
 if (!NATS_URL) {
-  throw new Error("NATS_URL must be defined");
+  log.critical("NATS_URL must be defined");
+  Deno.exit(1);
 }
 
 const natsConnection = await nats.connect({ servers: NATS_URL });
 
-console.log("Connected to nats");
+log.info("Connected to nats");
 
 export { natsConnection };

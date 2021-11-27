@@ -1,4 +1,4 @@
-import { Router } from "../deps.ts";
+import { log, Router } from "../deps.ts";
 import { topicCreatedPublisher } from "../events/topic_created_publisher.ts";
 import { topics } from "../models/topics.ts";
 
@@ -7,7 +7,7 @@ const router = new Router();
 router.post("/api/topics", async ({ request, response }) => {
   const result = request.body();
   if (result.type !== "json") {
-    console.error("That was not json");
+    log.warning("That was not json");
     response.status = 400;
     return;
   }
@@ -19,19 +19,19 @@ router.post("/api/topics", async ({ request, response }) => {
   } = await result.value;
 
   if (!description) {
-    console.error("Empty description");
+    log.warning("Empty description");
     response.status = 400;
     return;
   }
 
   if (!name) {
-    console.error("Empty name");
+    log.warning("Empty name");
     response.status = 400;
     return;
   }
 
   if (!userName) {
-    console.error("No topic author");
+    log.warning("No topic author");
     response.status = 400;
     return;
   }

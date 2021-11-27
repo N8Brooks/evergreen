@@ -1,4 +1,4 @@
-import { Application } from "./deps.ts";
+import { Application, log } from "./deps.ts";
 import { commentVotedSubscriber } from "./events/comment_voted_subscriber.ts";
 import { submissionVotedSubscriber } from "./events/submission_voted_subscriber.ts";
 import { createTopicRouter } from "./routes/create.ts";
@@ -12,6 +12,6 @@ const app = new Application();
 app.use(createTopicRouter.routes());
 app.use(listTopicsRouter.routes());
 
-console.log("Listening on 8000!");
+log.info("Listening on 8000!");
 
 await app.listen({ port: 8000 });
