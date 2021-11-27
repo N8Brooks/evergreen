@@ -21,7 +21,7 @@ export interface SubmissionCreatedEvent extends Event {
     userName: string;
 
     /** Given title */
-    name: string;
+    title: string;
 
     /** Associated url */
     url?: string;

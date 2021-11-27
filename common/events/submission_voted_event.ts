@@ -6,6 +6,9 @@ export interface SubmissionVotedEvent extends Event {
   message: {
     // The _id is assumed to be irrelevant
 
+    /** The time of update */
+    updatedAt: Date;
+
     /** Submission being voted on */
     submissionId: string;
 
