@@ -46,6 +46,7 @@ router.post("/api/topics", async ({ request, response }) => {
     submissionScore: 0,
   }) as string;
 
+  log.debug(`User ${userName} created topic ${name}`);
   topicCreatedPublisher.publish({
     createdAt,
     name,
