@@ -1,6 +1,6 @@
 import { log, MongoClient } from "../deps.ts";
 
-/** Throws error after failing to connect this many times */
+/** Exits process after failing to connect this many times */
 const MAXIMUM_CONNECTION_ATTEMPTS = 10;
 
 /** Time to wait before attempting to connect again in ms */
