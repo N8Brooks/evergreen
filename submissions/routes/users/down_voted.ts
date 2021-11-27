@@ -22,7 +22,10 @@ router.get(
     // TODO: truncate results
 
     const downVoteFilter = { userName, direction: DownVote };
-    const downVotes = await votes.find(downVoteFilter).toArray();
+    const downVotes = await votes
+      .find(downVoteFilter)
+      .sort({ updatedAt: -1 })
+      .toArray();
     const downVotedSubmissionIds = downVotes.map((downVote) =>
       new Bson.ObjectId(downVote.submissionId) as unknown as string
     );

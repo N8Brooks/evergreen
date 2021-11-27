@@ -52,7 +52,7 @@ router.patch("/api/submissions/:submissionId", async (context) => {
     return;
   }
 
-  const voteFilter = { submissionId, userName };
+  const voteFilter = { userName, submissionId };
   const vote = await votes.findOne(voteFilter);
   const oldVoteDirection = (vote?.direction ?? NoVote) as VoteDirections;
   if (oldVoteDirection === newVoteDirection) {
