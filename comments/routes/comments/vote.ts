@@ -51,7 +51,7 @@ router.patch("/api/comments/:commentId", async (context) => {
     return;
   }
 
-  const voteFilter = { commentId, userName };
+  const voteFilter = { userName, commentId };
   const vote = await votes.findOne(voteFilter);
   const oldVoteDirection = (vote?.direction ?? NoVote) as VoteDirections;
   if (oldVoteDirection === newVoteDirection) {
@@ -61,11 +61,12 @@ router.patch("/api/comments/:commentId", async (context) => {
   }
 
   // Update vote
+  const updatedAt = new Date();
   if (newVoteDirection === NoVote) {
     votes.deleteOne(voteFilter);
   } else {
     votes.updateOne(voteFilter, {
-      $set: { direction: newVoteDirection },
+      $set: { updatedAt, userName, commentId, direction: newVoteDirection },
     }, { upsert: true });
   }
 
@@ -88,6 +89,7 @@ router.patch("/api/comments/:commentId", async (context) => {
   const { upVoteDelta, downVoteDelta } = voteSortKeysBuilder;
   const { topicName } = comment;
   commentVotedPublisher.publish({
+    updatedAt,
     commentId,
     userName,
     topicName,

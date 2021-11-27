@@ -8,7 +8,7 @@ class SubmissionCreatedSubscriber extends Subscriber<SubmissionCreatedEvent> {
   queue = QUEUE;
 
   onMessage(message: SubmissionCreatedEvent["message"]): void {
-    log.debug(`Received submission created event: ${message.name}`);
+    log.debug(`Received submission created event: ${message.title}`);
     const {
       id,
       topicName,

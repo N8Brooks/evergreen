@@ -62,11 +62,12 @@ router.patch("/api/submissions/:submissionId", async (context) => {
   }
 
   // Update vote
+  const updatedAt = new Date();
   if (newVoteDirection === NoVote) {
     votes.deleteOne(voteFilter);
   } else {
     votes.updateOne(voteFilter, {
-      $set: { direction: newVoteDirection },
+      $set: { updatedAt, userName, submissionId, direction: newVoteDirection },
     }, { upsert: true });
   }
 
@@ -89,6 +90,7 @@ router.patch("/api/submissions/:submissionId", async (context) => {
   const { upVoteDelta, downVoteDelta } = voteSortKeysBuilder;
   const { topicName } = submission;
   submissionVotedPublisher.publish({
+    updatedAt,
     submissionId,
     userName,
     topicName,

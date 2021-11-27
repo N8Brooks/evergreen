@@ -33,13 +33,13 @@ router.post("/api/topics/:topicName/submissions", async (context) => {
   }
 
   const {
-    name,
+    title,
     url,
     userName,
     language,
   } = await result.value;
 
-  if (!name) {
+  if (!title) {
     log.warning("Empty name");
     response.status = 400;
     return;
@@ -73,7 +73,7 @@ router.post("/api/topics/:topicName/submissions", async (context) => {
     language,
     topicName,
     userName,
-    name,
+    title,
     url,
     commentCount: 0,
     ...VoteSortKeysBuilder.default,
@@ -86,7 +86,7 @@ router.post("/api/topics/:topicName/submissions", async (context) => {
     language,
     topicName,
     userName,
-    name,
+    title,
     url,
   });
 
