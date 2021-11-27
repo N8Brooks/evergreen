@@ -26,6 +26,7 @@ export async function connectMongoClientWithRetries(
         log.error(e);
       } else {
         log.critical(e);
+        Deno.exit(1);
       }
       await new Promise((res) => setTimeout(res, CONNECTION_ATTEMPT_DELAY));
     }
