@@ -1,4 +1,4 @@
-import { LANGUAGES, Router, VoteSortKeysBuilder } from "../../deps.ts";
+import { LANGUAGES, log, Router, VoteSortKeysBuilder } from "../../deps.ts";
 import { submissionCreatedPublisher } from "../../events/submission_created_publisher.ts";
 import { submissions } from "../../models/submissions.ts";
 import { topics } from "../../models/topics.ts";
@@ -9,7 +9,7 @@ router.post("/api/topics/:topicName/submissions", async (context) => {
   const { params, request, response } = context;
   const result = request.body();
   if (result.type !== "json") {
-    console.error("That was not json");
+    log.warning("That was not json");
     response.status = 400;
     return;
   }
@@ -17,7 +17,7 @@ router.post("/api/topics/:topicName/submissions", async (context) => {
   const { topicName } = params;
 
   if (!topicName) {
-    console.error("No topic name");
+    log.warning("No topic name");
     response.status = 400;
     return;
   }
@@ -27,7 +27,7 @@ router.post("/api/topics/:topicName/submissions", async (context) => {
   });
 
   if (!topic) {
-    console.error("Topic name does not exist");
+    log.warning("Topic name does not exist");
     response.status = 404;
     return;
   }
@@ -40,7 +40,7 @@ router.post("/api/topics/:topicName/submissions", async (context) => {
   } = await result.value;
 
   if (!name) {
-    console.error("Empty name");
+    log.warning("Empty name");
     response.status = 400;
     return;
   }
@@ -50,19 +50,19 @@ router.post("/api/topics/:topicName/submissions", async (context) => {
       new URL(url);
     }
   } catch {
-    console.error("Invalid url");
+    log.warning("Invalid url");
     response.status = 400;
     return;
   }
 
   if (!userName) {
-    console.error("No user name");
+    log.warning("No user name");
     response.status = 400;
     return;
   }
 
   if (!LANGUAGES.has(language)) {
-    console.error("Unknown language");
+    log.warning("Unknown language");
     response.status = 400;
     return;
   }
@@ -79,6 +79,7 @@ router.post("/api/topics/:topicName/submissions", async (context) => {
     ...VoteSortKeysBuilder.default,
   }) as string;
 
+  log.debug(`User ${userName} submitted ${id} on topic ${topicName}`);
   submissionCreatedPublisher.publish({
     id,
     createdAt,

@@ -1,4 +1,4 @@
-import { Router } from "../../deps.ts";
+import { log, Router } from "../../deps.ts";
 import { submissions } from "../../models/submissions.ts";
 
 const router = new Router();
@@ -11,7 +11,7 @@ router.get(
     // TODO: check if user exists here
 
     if (!userName) {
-      console.error("No user name");
+      log.warning("No user name");
       response.status = 400;
       return;
     }

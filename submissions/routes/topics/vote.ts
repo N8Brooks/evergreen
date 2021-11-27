@@ -1,5 +1,6 @@
 import {
   Bson,
+  log,
   Router,
   VOTE_DIRECTIONS,
   VoteDirections,
@@ -17,14 +18,14 @@ router.patch("/api/submissions/:submissionId", async (context) => {
   const { request, response, params } = context;
   const result = request.body();
   if (result.type !== "json") {
-    console.error("That was not json");
+    log.warning("That was not json");
     response.status = 400;
     return;
   }
 
   const { submissionId } = params;
   if (!submissionId) {
-    console.error("Invalid submissionId");
+    log.warning("Invalid submissionId");
     response.status = 400;
     return;
   }
@@ -32,7 +33,7 @@ router.patch("/api/submissions/:submissionId", async (context) => {
   const submissionFilter = { _id: new Bson.ObjectId(submissionId) };
   const submission = await submissions.findOne(submissionFilter);
   if (!submission) {
-    console.error("Submission does not exist");
+    log.warning("Submission does not exist");
     response.status = 400;
     return;
   }
@@ -40,13 +41,13 @@ router.patch("/api/submissions/:submissionId", async (context) => {
   const { direction: newVoteDirection, userName } = await result.value;
 
   if (!VOTE_DIRECTIONS.includes(newVoteDirection)) {
-    console.error("Invalid vote direction");
+    log.warning("Invalid vote direction");
     response.status = 400;
     return;
   }
 
   if (!userName) {
-    console.error("Invalid userName");
+    log.warning("Invalid userName");
     response.status = 400;
     return;
   }
@@ -55,7 +56,7 @@ router.patch("/api/submissions/:submissionId", async (context) => {
   const vote = await votes.findOne(voteFilter);
   const oldVoteDirection = (vote?.direction ?? NoVote) as VoteDirections;
   if (oldVoteDirection === newVoteDirection) {
-    console.error("The voteDirection must be different");
+    log.warning("The voteDirection must be different");
     response.status = 400;
     return;
   }
@@ -82,6 +83,9 @@ router.patch("/api/submissions/:submissionId", async (context) => {
   );
 
   // Publish message
+  log.debug(
+    `User ${userName} voted ${newVoteDirection} on submission ${submissionId}`,
+  );
   const { upVoteDelta, downVoteDelta } = voteSortKeysBuilder;
   const { topicName } = submission;
   submissionVotedPublisher.publish({

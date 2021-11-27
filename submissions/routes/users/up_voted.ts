@@ -1,4 +1,4 @@
-import { Bson, Router, VoteDirections } from "../../deps.ts";
+import { Bson, log, Router, VoteDirections } from "../../deps.ts";
 import { submissions } from "../../models/submissions.ts";
 import { votes } from "../../models/votes.ts";
 
@@ -12,7 +12,7 @@ router.get(
     const { userName } = params;
 
     if (!userName) {
-      console.error("No user name");
+      log.warning("No user name");
       response.status = 400;
       return;
     }

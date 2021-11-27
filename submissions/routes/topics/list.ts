@@ -1,4 +1,4 @@
-import { Router } from "../../deps.ts";
+import { log, Router } from "../../deps.ts";
 import { submissions } from "../../models/submissions.ts";
 
 const router = new Router();
@@ -11,7 +11,7 @@ router.get(
     // TODO: check if topic exists here
 
     if (!topicName) {
-      console.error("No parent topic name");
+      log.warning("No parent topic name");
       response.status = 400;
       return;
     }
