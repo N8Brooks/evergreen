@@ -62,7 +62,7 @@ router.patch("/api/submissions/:submissionId", async (context) => {
   }
 
   // Update vote
-  const updatedAt = new Date();
+  const updatedAt = Date.now();
   if (newVoteDirection === NoVote) {
     votes.deleteOne(voteFilter);
   } else {

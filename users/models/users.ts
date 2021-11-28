@@ -7,11 +7,11 @@ export interface UserSchema {
   /** User id */
   _id: string;
 
-  /** Creation date */
-  createdAt: Date;
+  /** Creation date UTC ms */
+  createdAt: number;
 
-  /** Updated date */
-  updatedAt?: Date;
+  /** Updated date UTC ms */
+  updatedAt?: number;
 
   /** User name */
   name: string;

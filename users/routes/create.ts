@@ -23,7 +23,7 @@ router.post("/api/users", async (context) => {
     return;
   }
 
-  const createdAt = new Date();
+  const createdAt = Date.now();
   const id = await users.insertOne({
     createdAt,
     name,

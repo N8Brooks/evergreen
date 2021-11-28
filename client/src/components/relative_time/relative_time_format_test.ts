@@ -10,8 +10,7 @@ import {
 // TODO: mock time
 
 Deno.test("rendered time element is no less than seconds", () => {
-  const oneDayFromNow = Date.now() + DAY_UNIT_FACTOR_MS;
-  const createdAt = new Date(oneDayFromNow).toString();
+  const createdAt = Date.now() + DAY_UNIT_FACTOR_MS;
   const time = relativeTimeFormat(createdAt);
   assertStrictEquals(time.tagName, "TIME");
   assertStrictEquals(time.innerText, RTF.format(-0, "seconds"));
@@ -19,8 +18,7 @@ Deno.test("rendered time element is no less than seconds", () => {
 });
 
 Deno.test("rendered time element T5M ago", () => {
-  const fiveMinutesAgo = Date.now() - 5 * 60 * 1000;
-  const createdAt = new Date(fiveMinutesAgo).toString();
+  const createdAt = Date.now() - 5 * 60 * 1000;
   const time = relativeTimeFormat(createdAt);
   assertStrictEquals(time.tagName, "TIME");
   assertStrictEquals(time.innerText, RTF.format(-5, "minutes"));
@@ -28,8 +26,7 @@ Deno.test("rendered time element T5M ago", () => {
 });
 
 Deno.test("rendered time element T12H ago", () => {
-  const fiveMinutesAgo = Date.now() - 12 * 60 * 60 * 1000;
-  const createdAt = new Date(fiveMinutesAgo).toString();
+  const createdAt = Date.now() - 12 * 60 * 60 * 1000;
   const time = relativeTimeFormat(createdAt);
   assertStrictEquals(time.tagName, "TIME");
   assertStrictEquals(time.innerText, RTF.format(-12, "hours"));
@@ -37,8 +34,7 @@ Deno.test("rendered time element T12H ago", () => {
 });
 
 Deno.test("rendered time element 3D ago", () => {
-  const threeDaysAgo = Date.now() - 3 * DAY_UNIT_FACTOR_MS;
-  const createdAt = new Date(threeDaysAgo).toString();
+  const createdAt = Date.now() - 3 * DAY_UNIT_FACTOR_MS;
   const time = relativeTimeFormat(createdAt);
   assertStrictEquals(time.tagName, "TIME");
   assertStrictEquals(time.innerText, RTF.format(-3, "days"));
@@ -47,8 +43,7 @@ Deno.test("rendered time element 3D ago", () => {
 
 Deno.test("rendered time element 6M ago", () => {
   const sixMonthsInDays = 6 * MONTH_UNIT_FACTOR_DAYS;
-  const sixMonthsAgo = Date.now() - sixMonthsInDays * DAY_UNIT_FACTOR_MS;
-  const createdAt = new Date(sixMonthsAgo).toString();
+  const createdAt = Date.now() - sixMonthsInDays * DAY_UNIT_FACTOR_MS;
   const time = relativeTimeFormat(createdAt);
   assertStrictEquals(time.tagName, "TIME");
   assertStrictEquals(time.innerText, RTF.format(-6, "months"));
@@ -57,8 +52,7 @@ Deno.test("rendered time element 6M ago", () => {
 
 Deno.test("rendered time element 4Y ago", () => {
   const fourYearsInDays = 4 * YEAR_UNIT_FACTOR_DAYS;
-  const fourYearsAgo = Date.now() - fourYearsInDays * DAY_UNIT_FACTOR_MS;
-  const createdAt = new Date(fourYearsAgo).toString();
+  const createdAt = Date.now() - fourYearsInDays * DAY_UNIT_FACTOR_MS;
   const time = relativeTimeFormat(createdAt);
   assertStrictEquals(time.tagName, "TIME");
   assertStrictEquals(time.innerText, RTF.format(-4, "years"));

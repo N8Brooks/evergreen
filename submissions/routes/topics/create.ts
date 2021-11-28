@@ -67,7 +67,7 @@ router.post("/api/topics/:topicName/submissions", async (context) => {
     return;
   }
 
-  const createdAt = new Date();
+  const createdAt = Date.now();
   const id = await submissions.insertOne({
     createdAt,
     language,

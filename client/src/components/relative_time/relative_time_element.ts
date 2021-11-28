@@ -42,8 +42,8 @@ export abstract class RelativeTimeElement {
   }
 
   /** Static time element factory given `createdAt` time. Not meant to be used directly. */
-  static _format(createdAt: string): HTMLTimeElement {
-    const elapsedTime = Math.max(0, Date.now() - Date.parse(createdAt));
+  static _format(createdAt: number): HTMLTimeElement {
+    const elapsedTime = Math.max(0, Date.now() - createdAt);
 
     // Finds the largest time unit that is smaller than
     // `elapsedTime` and no less than the smallest time unit.

@@ -36,7 +36,7 @@ router.post("/api/topics", async ({ request, response }) => {
     return;
   }
 
-  const createdAt = new Date();
+  const createdAt = Date.now();
   const id = await topics.insertOne({
     createdAt,
     description,

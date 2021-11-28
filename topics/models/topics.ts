@@ -7,11 +7,11 @@ export interface TopicSchema {
   /** Topic id */
   _id: string;
 
-  /** Creation date */
-  createdAt: Date;
+  /** Creation date UTC ms */
+  createdAt: number;
 
-  /** Update date */
-  updatedAt?: Date;
+  /** Update date UTC ms */
+  updatedAt?: number;
 
   /** Topic name */
   name: string;

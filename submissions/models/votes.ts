@@ -9,8 +9,8 @@ export interface VoteSchema {
   /** Vote id */
   _id: string;
 
-  /** Updated time */
-  updatedAt: Date;
+  /** Updated time UTC ms */
+  updatedAt: number;
 
   /** The user voting */
   userName: string;

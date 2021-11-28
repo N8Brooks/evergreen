@@ -7,11 +7,11 @@ export interface CommentSchema {
   /** Comment id */
   _id: string;
 
-  /** Creation time */
-  createdAt: Date;
+  /** Creation time UTC ms */
+  createdAt: number;
 
-  /** Update time */
-  updatedAt?: Date;
+  /** Update time UTC ms */
+  updatedAt?: number;
 
   /** Iso 639-1 code */
   language: Languages;

@@ -49,7 +49,7 @@ router.post("/api/comments/:commentId/comments", async (context) => {
     return;
   }
 
-  const createdAt = new Date();
+  const createdAt = Date.now();
   const { topicName, submissionId } = parent;
   const id = await comments.insertOne({
     createdAt,

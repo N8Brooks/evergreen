@@ -4,5 +4,6 @@ export interface SubmissionResponse {
   score: number;
   userName: string;
   topicName: string;
-  createdAt: string;
+  createdAt: number;
+  commentCount: number;
 }

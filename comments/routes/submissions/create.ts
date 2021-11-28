@@ -50,7 +50,7 @@ router.post("/api/submissions/:submissionId/comments", async (context) => {
     return;
   }
 
-  const createdAt = new Date();
+  const createdAt = Date.now();
   const { topicName } = submission;
   const id = await comments.insertOne({
     createdAt,
