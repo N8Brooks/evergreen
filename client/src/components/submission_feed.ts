@@ -25,9 +25,10 @@ function submissionArticle(response: SubmissionResponse) {
 
   const article = document.createElement("article");
   article.appendChild(submissionVotes(score));
+  article.appendChild(submissionUserName(userName));
+  article.appendChild(submissionTopicName(topicName));
   article.appendChild(submissionLink(url, title));
   article.appendChild(RelativeTimeElement.format(createdAt));
-
   return article;
 }
 
@@ -42,4 +43,16 @@ function submissionLink(url: string, title: string) {
   a.href = url;
   a.appendChild(submissionHeader(title));
   return a;
+}
+
+function submissionUserName(userName: string) {
+  const p = document.createElement("p");
+  p.innerText = userName;
+  return p;
+}
+
+function submissionTopicName(topicName: string) {
+  const p = document.createElement("p");
+  p.innerText = topicName;
+  return p;
 }
