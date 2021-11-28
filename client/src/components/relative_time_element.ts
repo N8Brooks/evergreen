@@ -28,11 +28,17 @@ const RTF = new Intl.RelativeTimeFormat();
 export abstract class RelativeTimeElement {
   private static relativeTimeElements: RelativeTimeElement[] = [];
 
+  /** ISO 8601 formatting according to w3 spec */
   protected abstract durationFormatter(duration: number): string;
+
+  /** One of the `TimeUnits` such as `"seconds"` */
   protected abstract unit: RelativeTimeUnit;
+
+  /** The conversion factor for this unit to milliseconds */
   protected abstract factor: number;
 
   constructor() {
+    // Necessary for usage in format
     RelativeTimeElement.relativeTimeElements.push(this);
   }
 

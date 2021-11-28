@@ -1,7 +1,7 @@
 /// <reference lib="dom" />
 
 import { SubmissionResponse } from "../types/submission_response.ts";
-import { RelativeTimeElement } from "../util/relative_time_element.ts";
+import { RelativeTimeElement } from "./relative_time_element.ts";
 import { submissionVotes } from "./submission_votes.ts";
 
 export function submissionFeed(submissions: SubmissionResponse[]) {
