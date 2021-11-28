@@ -25,7 +25,7 @@ function submissionArticle(response: SubmissionResponse) {
 
   const article = document.createElement("article");
   article.appendChild(submissionVotes(score));
-  article.appendChild(submissionHeader(title));
+  article.appendChild(submissionLink(url, title));
   article.appendChild(RelativeTimeElement.format(createdAt));
 
   return article;
@@ -35,4 +35,11 @@ function submissionHeader(title: string) {
   const header = document.createElement("h2");
   header.innerText = title;
   return header;
+}
+
+function submissionLink(url: string, title: string) {
+  const a = document.createElement("a");
+  a.href = url;
+  a.appendChild(submissionHeader(title));
+  return a;
 }
