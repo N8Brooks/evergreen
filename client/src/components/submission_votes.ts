@@ -1,5 +1,9 @@
 /// <reference lib="dom" />
 
+import { NF } from "./number_formatter.ts";
+
+// TODO: Intl for non-en-US and aria
+
 const UPWARDS_FILLED_ARROW = "▲";
 const DOWNWARDS_FILLED_ARROW = "▼";
 
@@ -18,7 +22,9 @@ function submissionVoteButton(arrow: string) {
 }
 
 function submissionScore(score: number) {
-  const paragraph = document.createElement("p");
-  paragraph.innerText = score + "";
-  return paragraph;
+  const span = document.createElement("span");
+  const formattedScore = NF.format(score);
+  span.innerText = formattedScore;
+  span.ariaLabel = `${formattedScore} up votes`;
+  return span;
 }
