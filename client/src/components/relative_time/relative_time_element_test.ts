@@ -1,4 +1,4 @@
-import { assert } from "../../../deps.ts";
+import { assert } from "../../../test_deps.ts";
 import { RelativeTimeElement } from "./relative_time_element.ts";
 import "./relative_time_units.ts"; // Imported for side effects
 

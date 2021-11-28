@@ -13,7 +13,7 @@ type TimeUnits =
 type RelativeTimeUnit = Extract<Intl.RelativeTimeFormatUnit, TimeUnits>;
 
 /** Locality formatter */
-const RTF = new Intl.RelativeTimeFormat();
+export const RTF = new Intl.RelativeTimeFormat();
 
 /** Data and functionality associated with a given time unit */
 export abstract class RelativeTimeElement {

@@ -1,4 +1,4 @@
-import { assertStrictEquals } from "../../../deps.ts";
+import { assertStrictEquals } from "../../../test_deps.ts";
 import {
   daysUnit,
   hoursUnit,
