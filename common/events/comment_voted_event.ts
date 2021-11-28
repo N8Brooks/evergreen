@@ -6,8 +6,8 @@ export interface CommentVotedEvent extends Event {
   message: {
     // The _id is assumed to be irrelevant
 
-    /** The time of update */
-    updatedAt: Date;
+    /** The time of update UTC ms */
+    updatedAt: number;
 
     /** Comment being voted on */
     commentId: string;

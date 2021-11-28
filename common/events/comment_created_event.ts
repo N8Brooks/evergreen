@@ -8,8 +8,8 @@ export interface CommentCreatedEvent extends Event {
     /** Comment id */
     id: string;
 
-    /** Creation date */
-    createdAt: Date;
+    /** Creation date UTC ms */
+    createdAt: number;
 
     /** Iso 639-1 code */
     language: Languages;

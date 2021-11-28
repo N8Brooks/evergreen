@@ -4,8 +4,8 @@ import { Subjects } from "./subjects.ts";
 export interface UserCreatedEvent extends Event {
   subject: Subjects.UserCreated;
   message: {
-    /** Creation date */
-    createdAt: Date;
+    /** Creation date UTC ms */
+    createdAt: number;
 
     /** User name */
     name: string;
