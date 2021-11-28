@@ -7,7 +7,9 @@ import { listSubmissionsByTopicRouter } from "./routes/topics/list.ts";
 import { listSubmissionsByUserRouter } from "./routes/users/list.ts";
 import { listSubmissionsByDownVotedRouter } from "./routes/users/down_voted.ts";
 import { listSubmissionsByUpVotedRouter } from "./routes/users/up_voted.ts";
+import { commentCreatedSubscriber } from "./events/comment_created_subscriber.ts";
 
+commentCreatedSubscriber.listen();
 topicCreatedSubscriber.listen();
 
 const app = new Application();

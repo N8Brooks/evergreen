@@ -29,7 +29,7 @@ export interface SubmissionSchema {
   url?: string;
 
   /** Count of comments */
-  commentCount: number; // TODO: events for this
+  commentCount: number;
 
   /** Total up votes */
   upVotes: number;
