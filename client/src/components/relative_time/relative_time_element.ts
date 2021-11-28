@@ -18,16 +18,16 @@ const RTF = new Intl.RelativeTimeFormat();
 /** Data and functionality associated with a given time unit */
 export abstract class RelativeTimeElement {
   /** Collection of all constructed `RelativeTimeElement`s sorted by granularity */
-  private static relativeTimeElements: RelativeTimeElement[] = [];
+  static readonly relativeTimeElements: RelativeTimeElement[] = [];
 
   /** ISO 8601 formatting according to w3 spec */
-  protected abstract durationFormatter(duration: number): string;
+  abstract durationFormatter(duration: number): string;
 
   /** One of the `TimeUnits` such as `"seconds"` */
-  protected abstract unit: RelativeTimeUnit;
+  abstract unit: RelativeTimeUnit;
 
   /** The conversion factor for this unit to milliseconds */
-  protected abstract factor: number;
+  abstract factor: number;
 
   constructor() {
     // Insert `this` into `relativeTimeElements` sorted by `factor`
