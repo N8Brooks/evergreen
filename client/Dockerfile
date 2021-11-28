@@ -12,4 +12,4 @@ RUN deno cache deps.ts
 ADD . .
 RUN deno cache main.ts
 
-CMD ["run", "--allow-all", "main.ts"]
+CMD ["run", "--allow-all", "--watch", "main.ts"]
