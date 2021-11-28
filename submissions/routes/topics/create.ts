@@ -40,7 +40,7 @@ router.post("/api/topics/:topicName/submissions", async (context) => {
   } = await result.value;
 
   if (!title) {
-    log.warning("Empty name");
+    log.warning("Empty title");
     response.status = 400;
     return;
   }
