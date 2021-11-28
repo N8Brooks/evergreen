@@ -2,6 +2,7 @@
 
 import { SubmissionResponse } from "../types/submission_response.ts";
 import { relativeTimeFormat } from "./relative_time/relative_time_format.ts";
+import { submissionCommentCount } from "./submission_comment_count.ts";
 import { submissionVotes } from "./submission_votes.ts";
 
 export function submissionFeed(submissions: SubmissionResponse[]) {
@@ -21,14 +22,16 @@ function submissionArticle(response: SubmissionResponse) {
     userName,
     topicName,
     createdAt,
+    commentCount,
   } = response;
 
   const article = document.createElement("article");
   article.appendChild(submissionVotes(score));
+  article.appendChild(relativeTimeFormat(createdAt));
   article.appendChild(submissionUserName(userName));
   article.appendChild(submissionTopicName(topicName));
   article.appendChild(submissionLink(url, title));
-  article.appendChild(relativeTimeFormat(createdAt));
+  article.appendChild(submissionCommentCount(commentCount));
   return article;
 }
 
