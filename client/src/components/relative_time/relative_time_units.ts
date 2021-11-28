@@ -3,13 +3,13 @@ import { RelativeTimeElement } from "./relative_time_element.ts";
 // This file contains a collection of singletons representing time units.
 
 /** One day in milliseconds helper */
-const DAY_UNIT_FACTOR_MS = 24 * 60 * 60 * 1000;
+export const DAY_UNIT_FACTOR_MS = 24 * 60 * 60 * 1000;
 
 /** Approximate month in days */
-const MONTH_UNIT_FACTOR_DAYS = 31;
+export const MONTH_UNIT_FACTOR_DAYS = 31;
 
 /** Approximate year in days */
-const YEAR_UNIT_FACTOR_DAYS = 365;
+export const YEAR_UNIT_FACTOR_DAYS = 365;
 
 class SecondsUnit extends RelativeTimeElement {
   readonly unit = "seconds";
