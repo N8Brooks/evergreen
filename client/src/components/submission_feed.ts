@@ -1,7 +1,7 @@
 /// <reference lib="dom" />
 
 import { SubmissionResponse } from "../types/submission_response.ts";
-import { RelativeTimeElement } from "./relative_time_element.ts";
+import { relativeTimeFormat } from "./relative_time/relative_time_format.ts";
 import { submissionVotes } from "./submission_votes.ts";
 
 export function submissionFeed(submissions: SubmissionResponse[]) {
@@ -28,7 +28,7 @@ function submissionArticle(response: SubmissionResponse) {
   article.appendChild(submissionUserName(userName));
   article.appendChild(submissionTopicName(topicName));
   article.appendChild(submissionLink(url, title));
-  article.appendChild(RelativeTimeElement.format(createdAt));
+  article.appendChild(relativeTimeFormat(createdAt));
   return article;
 }
 
