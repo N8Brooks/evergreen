@@ -12,6 +12,7 @@ export * from "./events/subscriber.ts";
 export * from "./events/topic_created_event.ts";
 export * from "./events/user_created_event.ts";
 // middle_wares
+export * from "./middle_wares/constants.ts";
 export * from "./middle_wares/error_handler.ts";
 // models
 export * from "./models/connect_mongo_client_with_retries.ts";
