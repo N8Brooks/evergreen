@@ -1,21 +1,13 @@
-import { httpErrors, log, Router, superstruct } from "../deps.ts";
+import { httpErrors, log, RouterContext, superstruct } from "../deps.ts";
 import { userCreatedPublisher } from "../events/user_created_publisher.ts";
 import { users } from "../models/users.ts";
+import { SignInSignUpRequest } from "./name_request.ts";
 
-const { pattern, string } = superstruct;
-
-const USER_NAME_PATTERN = /^\w{1,32}$/;
-
-const SignUpRequest = superstruct.object({
-  name: pattern(string(), USER_NAME_PATTERN),
-});
-
-const signUpRouter = new Router();
-
-signUpRouter.post("/api/users/sign_up", async (context) => {
+/** Signs up a user */
+const signUpRoute = async (context: RouterContext<"/api/users/sign_up">) => {
   const result = context.request.body();
   const data = await result.value;
-  superstruct.assert(data, SignUpRequest);
+  superstruct.assert(data, SignInSignUpRequest);
 
   const { name } = data;
 
@@ -41,6 +33,6 @@ signUpRouter.post("/api/users/sign_up", async (context) => {
   context.cookies.set("user-name", name);
 
   context.response.status = 201;
-});
+};
 
-export { signUpRouter };
+export { signUpRoute };

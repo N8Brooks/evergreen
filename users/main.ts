@@ -1,8 +1,8 @@
-import { KeyStack } from "https://deno.land/x/oak@v10.0.0/keyStack.ts";
-import { Application, HttpError, log, Status, superstruct } from "./deps.ts";
+import { Application, HttpError, log, Router, superstruct } from "./deps.ts";
 import { commentVotedSubscriber } from "./events/comment_voted_subscriber.ts";
 import { submissionVotedSubscriber } from "./events/submission_voted_subscriber.ts";
-import { signUpRouter } from "./routes/sign_up_router.ts";
+import { signInRoute } from "./routes/sign_in_route.ts";
+import { signUpRoute } from "./routes/sign_up_route.ts";
 
 const { StructError } = superstruct;
 
@@ -29,7 +29,11 @@ app.use(async (context, next) => {
   }
 });
 
-app.use(signUpRouter.routes());
+const usersRouter = new Router()
+  .post("/api/users/sign_up", signUpRoute)
+  .post("/api/users/sign_in", signInRoute);
+
+app.use(usersRouter.routes());
 
 log.info("Listening on 8000!");
 
