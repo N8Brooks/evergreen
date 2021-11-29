@@ -1,4 +1,3 @@
-import { Languages } from "../deps.ts";
 import { mongoClient } from "./mongo_client.ts";
 
 const db = mongoClient.database("submissions");
@@ -14,7 +13,7 @@ export interface SubmissionSchema {
   updatedAt?: number;
 
   /** Iso 639-1 code */
-  language: Languages;
+  language?: string;
 
   /** Reference to topic name */
   topicName: string;

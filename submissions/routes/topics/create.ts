@@ -1,71 +1,63 @@
-import { LANGUAGES, log, Router, VoteSortKeysBuilder } from "../../deps.ts";
+import {
+  COOKIE_USER_NAME,
+  httpErrors,
+  log,
+  Router,
+  RouterContext,
+  superstruct,
+  VoteSortKeysBuilder,
+} from "../../deps.ts";
 import { submissionCreatedPublisher } from "../../events/submission_created_publisher.ts";
 import { submissions } from "../../models/submissions.ts";
 import { topics } from "../../models/topics.ts";
 
 const router = new Router();
 
-router.post("/api/topics/:topicName/submissions", async (context) => {
-  const { params, request, response } = context;
-  const result = request.body();
-  if (result.type !== "json") {
-    log.warning("That was not json");
-    response.status = 400;
-    return;
+const { size, define, object, string } = superstruct;
+
+/** Borrow URL api for checking if a url is valid. */
+const ValidUrl = define("ValidUrl", (url: unknown) => {
+  if (typeof url !== "string") {
+    return false;
   }
-
-  const { topicName } = params;
-
-  if (!topicName) {
-    log.warning("No topic name");
-    response.status = 400;
-    return;
+  if (url.length < 4 || 2048 < url.length) {
+    return false;
   }
-
-  const topic = await topics.findOne({
-    name: topicName,
-  });
-
-  if (!topic) {
-    log.warning("Topic name does not exist");
-    response.status = 404;
-    return;
-  }
-
-  const {
-    title,
-    url,
-    userName,
-    language,
-  } = await result.value;
-
-  if (!title) {
-    log.warning("Empty title");
-    response.status = 400;
-    return;
-  }
-
   try {
-    if (url) {
-      new URL(url);
-    }
+    new URL(url);
   } catch {
-    log.warning("Invalid url");
-    response.status = 400;
-    return;
+    return false;
   }
+  return true;
+});
 
+const CreateSubmissionRequest = object({
+  title: size(string(), 1, 256),
+  url: ValidUrl,
+});
+
+const createSubmissionRoute = async (
+  context: RouterContext<"/api/topics/:topicName/submissions">,
+) => {
+  const userName = await context.cookies.get(COOKIE_USER_NAME);
   if (!userName) {
-    log.warning("No user name");
-    response.status = 400;
-    return;
+    throw new httpErrors.Unauthorized("Sign in first");
   }
 
-  if (!LANGUAGES.has(language)) {
-    log.warning("Unknown language");
-    response.status = 400;
-    return;
+  const result = context.request.body();
+  const data = await result.value;
+
+  superstruct.assert(data, CreateSubmissionRequest);
+  const { title } = data;
+  const url = data.url as string;
+
+  const { topicName } = context.params;
+  const topic = await topics.findOne({ name: topicName });
+  if (!topic) {
+    throw new httpErrors.NotFound("Topic does not exist");
   }
+
+  const [language] = context.request.acceptsLanguages() ?? [];
 
   const createdAt = Date.now();
   const id = await submissions.insertOne({
@@ -90,8 +82,13 @@ router.post("/api/topics/:topicName/submissions", async (context) => {
     url,
   });
 
-  response.body = { id };
-  response.status = 201;
-});
+  context.response.body = { id };
+  context.response.status = 201;
+};
 
-export { router as createSubmissionRouter };
+const createSubmissionRouter = new Router().post(
+  "/api/topics/:topicName/submissions",
+  createSubmissionRoute,
+);
+
+export { createSubmissionRouter };
