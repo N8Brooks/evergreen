@@ -1,4 +1,10 @@
-import { httpErrors, log, RouterContext, superstruct } from "../deps.ts";
+import {
+  COOKIE_USER_NAME,
+  httpErrors,
+  log,
+  RouterContext,
+  superstruct,
+} from "../deps.ts";
 import { userCreatedPublisher } from "../events/user_created_publisher.ts";
 import { users } from "../models/users.ts";
 import { SignInSignUpRequest } from "./name_request.ts";
@@ -30,7 +36,7 @@ const signUpRoute = async (context: RouterContext<"/api/users/sign_up">) => {
     name,
   });
 
-  context.cookies.set("user-name", name);
+  context.cookies.set(COOKIE_USER_NAME, name);
 
   context.response.status = 201;
 };

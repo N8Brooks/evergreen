@@ -1,4 +1,9 @@
-import { httpErrors, RouterContext, superstruct } from "../deps.ts";
+import {
+  COOKIE_USER_NAME,
+  httpErrors,
+  RouterContext,
+  superstruct,
+} from "../deps.ts";
 import { users } from "../models/users.ts";
 import { SignInSignUpRequest } from "./name_request.ts";
 
@@ -15,7 +20,7 @@ const signInRoute = async (context: RouterContext<"/api/users/sign_in">) => {
     throw new httpErrors.BadRequest("There is no user with that name");
   }
 
-  context.cookies.set("user-name", name);
+  context.cookies.set(COOKIE_USER_NAME, name);
 
   context.response.status = 200;
 };
