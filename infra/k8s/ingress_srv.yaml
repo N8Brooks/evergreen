@@ -59,7 +59,7 @@ spec:
                 name: topics-srv
                 port:
                   number: 8000
-          - path: /api/users
+          - path: /api/users/(sign_up|sign_in|sign_out)
             pathType: Prefix
             backend:
               service:
