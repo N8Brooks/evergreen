@@ -1,6 +1,5 @@
 import { Event } from "./event.ts";
 import { Subjects } from "./subjects.ts";
-import { Languages } from "../types/languages.ts";
 
 export interface SubmissionCreatedEvent extends Event {
   subject: Subjects.SubmissionCreated;
@@ -12,7 +11,7 @@ export interface SubmissionCreatedEvent extends Event {
     createdAt: number;
 
     /** Iso 639-1 code */
-    language: Languages;
+    language?: string;
 
     /** Reference to topic */
     topicName: string;

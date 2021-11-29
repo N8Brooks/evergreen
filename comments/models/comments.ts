@@ -1,4 +1,3 @@
-import { Languages } from "../deps.ts";
 import { mongoClient } from "./mongo_client.ts";
 
 const db = mongoClient.database("comments");
@@ -14,7 +13,7 @@ export interface CommentSchema {
   updatedAt?: number;
 
   /** Iso 639-1 code */
-  language: Languages;
+  language?: string;
 
   /** The topic this is associated with */
   topicName: string;
