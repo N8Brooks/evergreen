@@ -2,7 +2,6 @@ import {
   COOKIE_USER_NAME,
   httpErrors,
   log,
-  Router,
   RouterContext,
   superstruct,
   VoteSortKeysBuilder,
@@ -11,11 +10,8 @@ import { submissionCreatedPublisher } from "../../events/submission_created_publ
 import { submissions } from "../../models/submissions.ts";
 import { topics } from "../../models/topics.ts";
 
-const router = new Router();
-
 const { size, define, object, string } = superstruct;
 
-/** Borrow URL api for checking if a url is valid. */
 const ValidUrl = define("ValidUrl", (url: unknown) => {
   if (typeof url !== "string") {
     return false;
@@ -86,9 +82,4 @@ const createSubmissionRoute = async (
   context.response.status = 201;
 };
 
-const createSubmissionRouter = new Router().post(
-  "/api/topics/:topicName/submissions",
-  createSubmissionRoute,
-);
-
-export { createSubmissionRouter };
+export { createSubmissionRoute };

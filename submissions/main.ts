@@ -1,6 +1,6 @@
-import { createSubmissionRouter } from "./routes/topics/create.ts";
+import { createSubmissionRoute } from "./routes/topics/create.ts";
 import { voteSubmissionRouter } from "./routes/topics/vote.ts";
-import { Application, log } from "./deps.ts";
+import { Application, log, Router } from "./deps.ts";
 import { topicCreatedSubscriber } from "./events/topic_created_subscriber.ts";
 import { listSubmissionsRouter } from "./routes/list.ts";
 import { listSubmissionsByTopicRouter } from "./routes/topics/list.ts";
@@ -12,9 +12,11 @@ import { commentCreatedSubscriber } from "./events/comment_created_subscriber.ts
 commentCreatedSubscriber.listen();
 topicCreatedSubscriber.listen();
 
-const app = new Application();
+const submissionsRouter = new Router()
+  .post("/api/topics/:topicName/submissions", createSubmissionRoute);
 
-app.use(createSubmissionRouter.routes());
+const app = new Application()
+  .use(submissionsRouter.routes());
 app.use(voteSubmissionRouter.routes());
 app.use(listSubmissionsRouter.routes());
 app.use(listSubmissionsByUpVotedRouter.routes());
