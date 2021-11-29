@@ -8,16 +8,14 @@ import { signUpRoute } from "./routes/sign_up_route.ts";
 commentVotedSubscriber.listen();
 submissionVotedSubscriber.listen();
 
-const app = new Application();
-
-app.use(errorHandler);
-
 const usersRouter = new Router()
   .post("/api/users/sign_up", signUpRoute)
   .post("/api/users/sign_in", signInRoute)
   .post("/api/users/sign_out", signOutRoute);
 
-app.use(usersRouter.routes());
+const app = new Application()
+  .use(errorHandler)
+  .use(usersRouter.routes());
 
 log.info("Listening on 8000!");
 
