@@ -17,6 +17,7 @@ const submissionsRouter = new Router()
 
 const app = new Application()
   .use(submissionsRouter.routes());
+
 app.use(voteSubmissionRouter.routes());
 app.use(listSubmissionsRouter.routes());
 app.use(listSubmissionsByUpVotedRouter.routes());

@@ -12,24 +12,21 @@ import { topics } from "../../models/topics.ts";
 
 const { size, define, object, string } = superstruct;
 
-const ValidUrl = define("ValidUrl", (url: unknown) => {
-  if (typeof url !== "string") {
-    return false;
-  }
-  if (url.length < 4 || 2048 < url.length) {
-    return false;
-  }
-  try {
-    new URL(url);
-  } catch {
-    return false;
-  }
-  return true;
-});
-
 const CreateSubmissionRequest = object({
   title: size(string(), 1, 256),
-  url: ValidUrl,
+  url: define("validUrl", (url: unknown) => {
+    if (typeof url !== "string") {
+      return false;
+    }
+    if (url.length < 4 || 2048 < url.length) {
+      return false;
+    }
+    try {
+      return new URL(url).toString() === url;
+    } catch {
+      return false;
+    }
+  }),
 });
 
 const createSubmissionRoute = async (
