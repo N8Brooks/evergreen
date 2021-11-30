@@ -1,5 +1,5 @@
 import {
-  COOKIE_USER_ID,
+  COOKIE_USER_NAME,
   httpErrors,
   log,
   RouterContext,
@@ -25,8 +25,8 @@ const createTopicRoute = async (context: RouterContext<"/api/topics">) => {
     name,
   } = data;
 
-  const userId = await context.cookies.get(COOKIE_USER_ID);
-  if (!userId) {
+  const userName = await context.cookies.get(COOKIE_USER_NAME);
+  if (!userName) {
     throw new httpErrors.Unauthorized("Sign in first");
   }
 
@@ -37,6 +37,7 @@ const createTopicRoute = async (context: RouterContext<"/api/topics">) => {
   }
 
   const createdAt = Date.now();
+  const userId = userName.toLowerCase();
   await topics.insertOne({
     _id: id,
     createdAt,
@@ -47,7 +48,7 @@ const createTopicRoute = async (context: RouterContext<"/api/topics">) => {
     submissionScore: 0,
   });
 
-  log.debug(`User ${userId} created topic ${name}`);
+  log.debug(`User ${userName} created topic ${name}`);
   topicCreatedPublisher.publish({
     id,
     createdAt,
