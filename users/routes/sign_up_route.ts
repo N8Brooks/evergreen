@@ -1,5 +1,5 @@
 import {
-  COOKIE_USER_NAME,
+  COOKIE_USER_ID,
   httpErrors,
   log,
   RouterContext,
@@ -16,14 +16,16 @@ const signUpRoute = async (context: RouterContext<"/api/users/sign_up">) => {
   superstruct.assert(data, SignInSignUpRequest);
 
   const { name } = data;
+  const id = name.toLowerCase();
 
-  const existingUser = await users.findOne({ name });
+  const existingUser = await users.findOne({ _id: id });
   if (existingUser) {
     throw new httpErrors.BadRequest("A user already exists with that name");
   }
 
   const createdAt = Date.now();
   await users.insertOne({
+    _id: id,
     createdAt,
     name,
     commentScore: 0,
@@ -32,11 +34,12 @@ const signUpRoute = async (context: RouterContext<"/api/users/sign_up">) => {
 
   log.debug(`User ${name} created`);
   userCreatedPublisher.publish({
+    id,
     createdAt,
     name,
   });
 
-  context.cookies.set(COOKIE_USER_NAME, name);
+  context.cookies.set(COOKIE_USER_ID, id);
 
   context.response.status = 201;
 };

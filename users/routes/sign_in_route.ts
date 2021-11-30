@@ -1,5 +1,5 @@
 import {
-  COOKIE_USER_NAME,
+  COOKIE_USER_ID,
   httpErrors,
   RouterContext,
   superstruct,
@@ -14,13 +14,14 @@ const signInRoute = async (context: RouterContext<"/api/users/sign_in">) => {
   superstruct.assert(data, SignInSignUpRequest);
 
   const { name } = data;
+  const id = name.toLowerCase();
 
-  const existingUser = await users.findOne({ name });
+  const existingUser = await users.findOne({ _id: id });
   if (!existingUser) {
     throw new httpErrors.BadRequest("There is no user with that name");
   }
 
-  context.cookies.set(COOKIE_USER_NAME, name);
+  context.cookies.set(COOKIE_USER_ID, id);
 
   context.response.status = 200;
 };
