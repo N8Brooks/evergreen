@@ -4,6 +4,7 @@ import {
   log,
   RouterContext,
   superstruct,
+  URI_PATTERN,
   VoteSortKeysBuilder,
 } from "../../deps.ts";
 import { submissionCreatedPublisher } from "../../events/submission_created_publisher.ts";
@@ -11,9 +12,6 @@ import { submissions } from "../../models/submissions.ts";
 import { topics } from "../../models/topics.ts";
 
 const { size, define, object, string } = superstruct;
-
-/** Matches URLs between 4 and 2048 character inclusive with no non-escaped characters */
-const URI_PATTERN = /^[\w;,/\?:@\&=\+\$\-\.!~\*'\(\)#]{4,2048}$/;
 
 const CreateSubmissionRequest = object({
   title: size(string(), 1, 256),
@@ -33,7 +31,7 @@ const CreateSubmissionRequest = object({
   }),
 });
 
-const createSubmissionRoute = async (
+const createSubmissionInTopicRoute = async (
   context: RouterContext<"/api/topics/:topicName/submissions">,
 ) => {
   const userName = await context.cookies.get(COOKIE_USER_NAME);
@@ -89,4 +87,4 @@ const createSubmissionRoute = async (
   context.response.status = 201;
 };
 
-export { createSubmissionRoute };
+export { createSubmissionInTopicRoute };
