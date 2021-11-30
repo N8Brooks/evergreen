@@ -1,22 +1,22 @@
 import { Application, errorHandler, log, Router } from "./deps.ts";
 import { topicCreatedSubscriber } from "./events/topic_created_subscriber.ts";
 import { commentCreatedSubscriber } from "./events/comment_created_subscriber.ts";
-import { listSubmissionInTopicRoute } from "./routes/topics/list_submissions_in_topic_route.ts";
-import { createSubmissionInTopicRoute } from "./routes/topics/create_submission_in_topic_route.ts";
-import { voteOnSubmissionRoute } from "./routes/vote_on_submission_route.ts";
-import { listSubmissionsRoute } from "./routes/list_submissions_route.ts";
-import { listUserDownVotedSubmissions } from "./routes/users/listUserDownVotedSubmissions.ts";
-import { listUserUpVotedSubmissions } from "./routes/users/listUserUpVotedSubmissions.ts";
 import { listSubmissionsByUser } from "./routes/users/list_submissions_by_user.ts";
+import { listSubmissions } from "./routes/list_submissions.ts";
+import { createSubmissionInTopic } from "./routes/topics/create_submission_in_topic.ts";
+import { listSubmissionInTopic } from "./routes/topics/list_submissions_in_topic.ts";
+import { listUserDownVotedSubmissions } from "./routes/users/list_user_down_voted_submissions.ts";
+import { listUserUpVotedSubmissions } from "./routes/users/list_user_up_voted_submissions.ts";
+import { voteOnSubmission } from "./routes/vote_on_submission.ts";
 
 commentCreatedSubscriber.listen();
 topicCreatedSubscriber.listen();
 
 const submissionsRouter = new Router()
-  .post("/api/topics/:topicName/submissions", createSubmissionInTopicRoute)
-  .get("/api/topics/:topicName/submissions", listSubmissionInTopicRoute)
-  .patch("/api/submissions/:submissionId", voteOnSubmissionRoute)
-  .get("/api/submissions", listSubmissionsRoute)
+  .post("/api/topics/:topicName/submissions", createSubmissionInTopic)
+  .get("/api/topics/:topicName/submissions", listSubmissionInTopic)
+  .patch("/api/submissions/:submissionId", voteOnSubmission)
+  .get("/api/submissions", listSubmissions)
   .get("/api/users/:_userName/down_voted", listUserDownVotedSubmissions)
   .get("/api/users/:_userName/up_voted", listUserUpVotedSubmissions)
   .get("/api/users/:_userName/submissions", listSubmissionsByUser);

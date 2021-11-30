@@ -31,8 +31,8 @@ const CreateSubmissionRequest = object({
   }),
 });
 
-const createSubmissionInTopicRoute = async (
-  context: RouterContext<"/api/topics/:topicName/submissions">,
+const createSubmissionInTopic = async (
+  context: RouterContext<"/api/topics/:_topicName/submissions">,
 ) => {
   const userName = await context.cookies.get(COOKIE_USER_NAME);
   if (!userName) {
@@ -46,18 +46,19 @@ const createSubmissionInTopicRoute = async (
   const { title } = data;
   const url = data.url as string;
 
-  const { topicName } = context.params;
-  const topicId = topicName.toLowerCase();
+  const { _topicName } = context.params;
+  const topicId = _topicName.toLowerCase();
 
   const topic = await topics.findOne({ _id: topicId });
   if (!topic) {
     throw new httpErrors.NotFound("Topic does not exist");
   }
+  const topicName = topic.name;
 
   const createdAt = Date.now();
   const [language] = context.request.acceptsLanguages() ?? [];
   const userId = userName.toLowerCase();
-  const id = await submissions.insertOne({
+  const _id = await submissions.insertOne({
     createdAt,
     language,
     topicId,
@@ -68,7 +69,8 @@ const createSubmissionInTopicRoute = async (
     url,
     commentCount: 0,
     ...VoteSortKeysBuilder.default,
-  }) as string;
+  });
+  const id = _id.toString();
 
   log.debug(`User ${userName} submitted ${id} on topic ${topicName}`);
   submissionCreatedPublisher.publish({
@@ -87,4 +89,4 @@ const createSubmissionInTopicRoute = async (
   context.response.status = 201;
 };
 
-export { createSubmissionInTopicRoute };
+export { createSubmissionInTopic };

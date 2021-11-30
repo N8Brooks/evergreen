@@ -23,7 +23,7 @@ const VoteSubmissionRequest = object({
 
 // TODO: maybe one day $lookup will be possible which will prevent two mongo requests.
 
-const voteOnSubmissionRoute = async (
+const voteOnSubmission = async (
   context: RouterContext<"/api/submissions/:submissionId">,
 ) => {
   const userName = await context.cookies.get(COOKIE_USER_NAME);
@@ -92,4 +92,4 @@ const voteOnSubmissionRoute = async (
   context.response.status = 204;
 };
 
-export { voteOnSubmissionRoute };
+export { voteOnSubmission };

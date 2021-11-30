@@ -9,8 +9,8 @@ class TopicCreatedSubscriber extends Subscriber<TopicCreatedEvent> {
 
   onMessage(message: TopicCreatedEvent["message"]): void {
     log.debug(`Received topic created event: ${message.name}`);
-    const { id } = message;
-    topics.insertOne({ _id: id });
+    const { id, name } = message;
+    topics.insertOne({ _id: id, name });
   }
 }
 
