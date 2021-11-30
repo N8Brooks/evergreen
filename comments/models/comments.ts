@@ -15,8 +15,14 @@ export interface CommentSchema {
   /** Iso 639-1 code */
   language?: string;
 
+  /** The topic id this is associated with */
+  topicId: string;
+
   /** The topic this is associated with */
   topicName: string;
+
+  /** Comment author id */
+  userId: string;
 
   /** Comment author */
   userName: string;

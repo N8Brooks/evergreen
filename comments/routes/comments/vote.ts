@@ -1,4 +1,5 @@
 import {
+  Bson,
   log,
   Router,
   VOTE_DIRECTIONS,
@@ -29,7 +30,7 @@ router.patch("/api/comments/:commentId", async (context) => {
     return;
   }
 
-  const commentFilter = { _id: commentId };
+  const commentFilter = { _id: new Bson.ObjectId(commentId) };
   const comment = await comments.findOne(commentFilter);
   if (!comment) {
     log.warning("Comment does not exist");
@@ -50,6 +51,7 @@ router.patch("/api/comments/:commentId", async (context) => {
     response.status = 400;
     return;
   }
+  const userId = userName.toLowerCase();
 
   const voteFilter = { userName, commentId };
   const vote = await votes.findOne(voteFilter);
@@ -86,15 +88,15 @@ router.patch("/api/comments/:commentId", async (context) => {
   log.debug(
     `User ${userName} voted ${newVoteDirection} on comment ${commentId}`,
   );
-  const { upVoteDelta, downVoteDelta } = voteSortKeysBuilder;
+  const { delta } = voteSortKeysBuilder;
   const { topicName } = comment;
+  const topicId = topicName.toLowerCase();
   commentVotedPublisher.publish({
     updatedAt,
     commentId,
-    userName,
-    topicName,
-    upVoteDelta,
-    downVoteDelta,
+    userId,
+    topicId,
+    delta,
   });
 
   response.body = {};

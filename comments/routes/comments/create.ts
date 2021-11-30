@@ -30,6 +30,7 @@ router.post("/api/comments/:commentId/comments", async (context) => {
   }
 
   const { text, userName, language } = await result.value;
+  const userId = userName.toLowerCase();
 
   if (!text) {
     log.warning("No comment text");
@@ -44,11 +45,13 @@ router.post("/api/comments/:commentId/comments", async (context) => {
   }
 
   const createdAt = Date.now();
-  const { topicName, submissionId } = parent;
+  const { topicName, topicId, submissionId } = parent;
   const id = await comments.insertOne({
     createdAt,
     language,
+    topicId,
     topicName,
+    userId,
     userName,
     parentId,
     submissionId,
@@ -62,7 +65,9 @@ router.post("/api/comments/:commentId/comments", async (context) => {
     createdAt,
     language,
     topicName,
+    topicId,
     userName,
+    userId,
     parentId,
     submissionId,
     text,
