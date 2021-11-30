@@ -17,10 +17,9 @@ export interface VoteSortKeysBuilderOptions {
 
 /** Encapsulates data and getters for vote keys */
 export class VoteSortKeysBuilder {
-  readonly downVoteDelta: number;
-  readonly upVoteDelta: number;
   readonly downVotes: number;
   readonly upVotes: number;
+  readonly delta: number;
 
   constructor({
     oldDownVotes,
@@ -29,13 +28,14 @@ export class VoteSortKeysBuilder {
     newVoteDirection,
   }: VoteSortKeysBuilderOptions) {
     // Difference in votes
-    this.downVoteDelta = +(newVoteDirection === VoteDirections.DownVote) -
+    const downVoteDelta = +(newVoteDirection === VoteDirections.DownVote) -
       +(oldVoteDirection === VoteDirections.DownVote);
-    this.upVoteDelta = +(newVoteDirection === VoteDirections.UpVote) -
+    const upVoteDelta = +(newVoteDirection === VoteDirections.UpVote) -
       +(oldVoteDirection === VoteDirections.UpVote);
     // Update vote counts
-    this.downVotes = oldDownVotes + this.downVoteDelta;
-    this.upVotes = oldUpVotes + this.upVoteDelta;
+    this.downVotes = oldDownVotes + downVoteDelta;
+    this.upVotes = oldUpVotes + upVoteDelta;
+    this.delta = upVoteDelta - downVoteDelta;
   }
 
   /** Builds sort keys from getters */

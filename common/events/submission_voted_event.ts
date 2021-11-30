@@ -18,10 +18,7 @@ export interface SubmissionVotedEvent extends Event {
     /** Relevant topic */
     topicId: string;
 
-    /** Change in down votes */
-    downVoteDelta: number;
-
-    /** Change in up votes */
-    upVoteDelta: number;
+    /** Change in votes */
+    delta: number;
   };
 }
