@@ -9,5 +9,8 @@ export interface UserCreatedEvent extends Event {
 
     /** User name */
     name: string;
+
+    /** Url unique lowercase user name */
+    uniqueName: string;
   };
 }

@@ -10,6 +10,9 @@ export interface TopicCreatedEvent extends Event {
     /** Topic name */
     name: string;
 
+    /** Url unique lowercase topic name */
+    uniqueName: string;
+
     /** User who created the topic */
     userName: string;
 
