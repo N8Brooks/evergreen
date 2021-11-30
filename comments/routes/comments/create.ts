@@ -1,4 +1,4 @@
-import { LANGUAGES, log, Router, VoteSortKeysBuilder } from "../../deps.ts";
+import { log, Router, VoteSortKeysBuilder } from "../../deps.ts";
 import { commentCreatedPublisher } from "../../events/comment_created_publisher.ts";
 import { comments } from "../../models/comments.ts";
 
@@ -39,12 +39,6 @@ router.post("/api/comments/:commentId/comments", async (context) => {
 
   if (!userName) {
     log.warning("No comment author");
-    response.status = 400;
-    return;
-  }
-
-  if (!LANGUAGES.has(language)) {
-    log.warning("Unknown language");
     response.status = 400;
     return;
   }
