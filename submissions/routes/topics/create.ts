@@ -12,17 +12,21 @@ import { topics } from "../../models/topics.ts";
 
 const { size, define, object, string } = superstruct;
 
+/** Matches URLs between 4 and 2048 character inclusive with no non-escaped characters */
+const URI_PATTERN = /^[\w;,/\?:@\&=\+\$\-\.!~\*'\(\)#]{4,2048}$/;
+
 const CreateSubmissionRequest = object({
   title: size(string(), 1, 256),
   url: define("validUrl", (url: unknown) => {
     if (typeof url !== "string") {
       return false;
     }
-    if (url.length < 4 || 2048 < url.length) {
+    if (!URI_PATTERN.test(url)) {
       return false;
     }
     try {
-      return new URL(url).toString() === url;
+      new URL(url);
+      return true;
     } catch {
       return false;
     }
@@ -45,18 +49,22 @@ const createSubmissionRoute = async (
   const url = data.url as string;
 
   const { topicName } = context.params;
-  const topic = await topics.findOne({ name: topicName });
+  const topicId = topicName.toLowerCase();
+
+  const topic = await topics.findOne({ _id: topicId });
   if (!topic) {
     throw new httpErrors.NotFound("Topic does not exist");
   }
 
-  const [language] = context.request.acceptsLanguages() ?? [];
-
   const createdAt = Date.now();
+  const [language] = context.request.acceptsLanguages() ?? [];
+  const userId = userName.toLowerCase();
   const id = await submissions.insertOne({
     createdAt,
     language,
+    topicId,
     topicName,
+    userId,
     userName,
     title,
     url,
@@ -69,7 +77,9 @@ const createSubmissionRoute = async (
     id,
     createdAt,
     language,
+    topicId,
     topicName,
+    userId,
     userName,
     title,
     url,

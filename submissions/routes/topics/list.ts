@@ -7,6 +7,7 @@ router.get(
   "/api/topics/:topicName/submissions",
   async ({ params, response }) => {
     const { topicName } = params;
+    const topicId = topicName.toLowerCase();
 
     // TODO: check if topic exists here
 
@@ -18,7 +19,7 @@ router.get(
 
     // TODO: truncate results
 
-    response.body = await submissions.find({ topicName }).toArray();
+    response.body = await submissions.find({ _id: topicId }).toArray();
   },
 );
 

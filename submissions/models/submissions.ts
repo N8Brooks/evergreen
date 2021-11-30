@@ -15,8 +15,14 @@ export interface SubmissionSchema {
   /** Iso 639-1 code */
   language?: string;
 
+  /** Reference to topic id */
+  topicId: string;
+
   /** Reference to topic name */
   topicName: string;
+
+  /** Author id */
+  userId: string;
 
   /** Author */
   userName: string;

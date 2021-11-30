@@ -13,7 +13,7 @@ export interface VoteSchema {
   updatedAt: number;
 
   /** The user voting */
-  userName: string;
+  userId: string;
 
   /** The submission being voted on */
   submissionId: string;
@@ -24,29 +24,29 @@ export interface VoteSchema {
 
 const votes = db.collection<VoteSchema>("votes");
 
-/** Many to many userName-submissionId must be unique */
-const userNameSubmissionIdIndex: IndexOptions = {
-  key: { userName: 1, submissionId: 1 },
-  name: "_userNameSubmissionId",
+/** Many to many userId-submissionId must be unique */
+const userIdSubmissionIdIndex: IndexOptions = {
+  key: { userId: 1, submissionId: 1 },
+  name: "_userIdSubmissionId",
   unique: true,
 };
 
-/** Support querying by up votes */
+/** Querying by up votes */
 const upVotedIndex: IndexOptions = {
-  key: { userName: 1, updatedAt: -1 },
+  key: { userId: 1, updatedAt: -1 },
   name: "_upVoted",
   partialFilterExpression: { direction: UpVote },
 };
 
-/** Support querying by down votes */
+/** Querying by down votes */
 const downVotedIndex: IndexOptions = {
-  key: { userName: 1, updatedAt: -1 },
+  key: { userId: 1, updatedAt: -1 },
   name: "_downVoted",
   partialFilterExpression: { direction: DownVote },
 };
 
 votes.createIndexes({
-  indexes: [userNameSubmissionIdIndex, upVotedIndex, downVotedIndex],
+  indexes: [userIdSubmissionIdIndex, upVotedIndex, downVotedIndex],
 });
 
 export { votes };

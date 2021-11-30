@@ -87,15 +87,14 @@ router.patch("/api/submissions/:submissionId", async (context) => {
   log.debug(
     `User ${userName} voted ${newVoteDirection} on submission ${submissionId}`,
   );
-  const { upVoteDelta, downVoteDelta } = voteSortKeysBuilder;
+  const { delta } = voteSortKeysBuilder;
   const { topicName } = submission;
   submissionVotedPublisher.publish({
     updatedAt,
     submissionId,
-    userName,
-    topicName,
-    upVoteDelta,
-    downVoteDelta,
+    userId: userName,
+    topicId: topicName,
+    delta,
   });
 
   response.body = {};

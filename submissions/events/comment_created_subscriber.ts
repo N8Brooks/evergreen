@@ -13,21 +13,13 @@ class CommentCreatedSubscriber extends Subscriber<CommentCreatedEvent> {
   readonly subject = Subjects.CommentCreated;
   queue = QUEUE;
 
-  async onMessage(message: CommentCreatedEvent["message"]): Promise<void> {
+  onMessage(message: CommentCreatedEvent["message"]): void {
     const { id, submissionId } = message;
-
     log.debug(`Received comment created event: ${id}`);
-
-    const { modifiedCount } = await submissions.updateOne(
+    submissions.updateOne(
       { _id: new Bson.ObjectId(submissionId) },
       { $inc: { commentCount: 1 } },
     );
-
-    if (modifiedCount !== 1) {
-      log.warning(
-        `Comment ${id} for submission ${submissionId} modified ${modifiedCount} documents`,
-      );
-    }
   }
 }
 
