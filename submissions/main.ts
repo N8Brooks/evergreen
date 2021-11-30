@@ -13,8 +13,8 @@ commentCreatedSubscriber.listen();
 topicCreatedSubscriber.listen();
 
 const submissionsRouter = new Router()
-  .post("/api/topics/:topicName/submissions", createSubmissionInTopic)
-  .get("/api/topics/:topicName/submissions", listSubmissionInTopic)
+  .post("/api/topics/:_topicName/submissions", createSubmissionInTopic)
+  .get("/api/topics/:_topicName/submissions", listSubmissionInTopic)
   .patch("/api/submissions/:submissionId", voteOnSubmission)
   .get("/api/submissions", listSubmissions)
   .get("/api/users/:_userName/down_voted", listUserDownVotedSubmissions)
