@@ -4,7 +4,7 @@ import { Event } from "./event.ts";
 export interface SubmissionVotedEvent extends Event {
   subject: Subjects.SubmissionVoted;
   message: {
-    // The _id is assumed to be irrelevant
+    // The id is assumed to be irrelevant
 
     /** The time of update UTC ms */
     updatedAt: number;

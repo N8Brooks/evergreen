@@ -4,14 +4,14 @@ import { Subjects } from "./subjects.ts";
 export interface TopicCreatedEvent extends Event {
   subject: Subjects.TopicCreated;
   message: {
+    /** Url unique lowercase name */
+    id: string;
+
     /** Creation UTC ms */
     createdAt: number;
 
     /** Topic name */
     name: string;
-
-    /** Url unique lowercase topic name */
-    uniqueName: string;
 
     /** User who created the topic */
     userName: string;

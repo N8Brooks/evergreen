@@ -4,7 +4,7 @@ import { Subjects } from "./subjects.ts";
 export interface SubmissionCreatedEvent extends Event {
   subject: Subjects.SubmissionCreated;
   message: {
-    /** Submission id */
+    /** ObjectId */
     id: string;
 
     /** Creation date UTC ms */

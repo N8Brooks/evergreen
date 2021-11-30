@@ -4,7 +4,7 @@ import { Subjects } from "./subjects.ts";
 export interface CommentCreatedEvent extends Event {
   subject: Subjects.CommentCreated;
   message: {
-    /** Comment id */
+    /** ObjectId */
     id: string;
 
     /** Creation date UTC ms */
