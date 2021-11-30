@@ -8,11 +8,11 @@ class SubmissionVotedSubscriber extends Subscriber<SubmissionVotedEvent> {
   queue = QUEUE;
 
   onMessage(message: SubmissionVotedEvent["message"]): void {
-    const { topicName, upVoteDelta, downVoteDelta } = message;
+    const { topicId, delta } = message;
     log.debug(`Received submission voted event: ${message.submissionId}`);
     topics.updateOne(
-      { name: topicName },
-      { $inc: { submissionScore: upVoteDelta - downVoteDelta } },
+      { _id: topicId },
+      { $inc: { submissionScore: delta } },
     );
   }
 }
