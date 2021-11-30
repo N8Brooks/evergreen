@@ -13,10 +13,10 @@ export interface SubmissionVotedEvent extends Event {
     submissionId: string;
 
     /** User doing the voting */
-    userName: string;
+    userId: string;
 
     /** Relevant topic */
-    topicName: string;
+    topicId: string;
 
     /** Change in down votes */
     downVoteDelta: number;

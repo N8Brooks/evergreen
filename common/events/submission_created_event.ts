@@ -14,9 +14,15 @@ export interface SubmissionCreatedEvent extends Event {
     language?: string;
 
     /** Reference to topic */
+    topicId: string;
+
+    /** Reference to topic */
     topicName: string;
 
-    /** Author */
+    /** Author id */
+    userId: string;
+
+    /** Author name */
     userName: string;
 
     /** Given title */

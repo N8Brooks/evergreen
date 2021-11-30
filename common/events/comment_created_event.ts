@@ -14,9 +14,15 @@ export interface CommentCreatedEvent extends Event {
     language?: string;
 
     /** Reference to topic */
+    topicId: string;
+
+    /** Reference to topic */
     topicName: string;
 
-    /** Author */
+    /** Author id */
+    userId: string;
+
+    /** Author name */
     userName: string;
 
     /** The optional comment this is replying to */

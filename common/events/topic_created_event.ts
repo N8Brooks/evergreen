@@ -14,7 +14,7 @@ export interface TopicCreatedEvent extends Event {
     name: string;
 
     /** User who created the topic */
-    userName: string;
+    userId: string;
 
     /** Topic description */
     description: string;
