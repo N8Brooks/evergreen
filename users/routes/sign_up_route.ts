@@ -1,5 +1,5 @@
 import {
-  COOKIE_USER_ID,
+  COOKIE_USER_NAME,
   httpErrors,
   log,
   RouterContext,
@@ -39,7 +39,7 @@ const signUpRoute = async (context: RouterContext<"/api/users/sign_up">) => {
     name,
   });
 
-  context.cookies.set(COOKIE_USER_ID, id);
+  context.cookies.set(COOKIE_USER_NAME, name);
 
   context.response.status = 201;
 };

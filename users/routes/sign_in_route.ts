@@ -1,5 +1,5 @@
 import {
-  COOKIE_USER_ID,
+  COOKIE_USER_NAME,
   httpErrors,
   RouterContext,
   superstruct,
@@ -21,7 +21,7 @@ const signInRoute = async (context: RouterContext<"/api/users/sign_in">) => {
     throw new httpErrors.BadRequest("There is no user with that name");
   }
 
-  context.cookies.set(COOKIE_USER_ID, id);
+  context.cookies.set(COOKIE_USER_NAME, name);
 
   context.response.status = 200;
 };
