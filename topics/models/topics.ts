@@ -1,10 +1,8 @@
 import { mongoClient } from "./mongo_client.ts";
-import { IndexOptions } from "../deps.ts";
-
 const db = mongoClient.database("topics");
 
 export interface TopicSchema {
-  /** Topic id */
+  /** Url unique lowercase name */
   _id: string;
 
   /** Creation date UTC ms */
@@ -17,7 +15,7 @@ export interface TopicSchema {
   name: string;
 
   /** User who created the topic */
-  userName: string;
+  userId: string;
 
   /** Topic description */
   description: string;
@@ -30,16 +28,5 @@ export interface TopicSchema {
 }
 
 const topics = db.collection<TopicSchema>("topics");
-
-/** Topic names must be unique */
-const nameIndex: IndexOptions = {
-  key: { name: 1 },
-  name: "_name",
-  unique: true,
-};
-
-topics.createIndexes({
-  indexes: [nameIndex],
-});
 
 export { topics };

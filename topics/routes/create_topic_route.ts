@@ -1,5 +1,5 @@
 import {
-  COOKIE_USER_NAME,
+  COOKIE_USER_ID,
   httpErrors,
   log,
   RouterContext,
@@ -25,31 +25,34 @@ const createTopicRoute = async (context: RouterContext<"/api/topics">) => {
     name,
   } = data;
 
-  const userName = await context.cookies.get(COOKIE_USER_NAME);
-  if (!userName) {
+  const userId = await context.cookies.get(COOKIE_USER_ID);
+  if (!userId) {
     throw new httpErrors.Unauthorized("Sign in first");
   }
 
-  const existingTopic = await topics.findOne({ name });
+  const id = name.toLowerCase();
+  const existingTopic = await topics.findOne({ _id: id });
   if (existingTopic) {
     throw new httpErrors.BadRequest("A topic already exists with that name");
   }
 
   const createdAt = Date.now();
   await topics.insertOne({
+    _id: id,
     createdAt,
     description,
     name,
-    userName,
+    userId,
     commentScore: 0,
     submissionScore: 0,
   });
 
-  log.debug(`User ${userName} created topic ${name}`);
+  log.debug(`User ${userId} created topic ${name}`);
   topicCreatedPublisher.publish({
+    id,
     createdAt,
     name,
-    userName,
+    userId,
     description,
   });
 
