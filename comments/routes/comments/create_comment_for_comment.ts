@@ -34,7 +34,8 @@ const createCommentForComment = async (
 
   // Retrieve parent comment or throw 404
   const parentId = context.params.commentId;
-  const parent = await comments.findOne({ _id: new Bson.ObjectId(parentId) });
+  const commentFilter = { _id: new Bson.ObjectId(parentId) };
+  const parent = await comments.findOne(commentFilter);
   if (!parent) {
     throw new httpErrors.NotFound("Parent comment does not exist");
   }
