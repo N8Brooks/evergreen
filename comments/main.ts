@@ -4,7 +4,7 @@ import { createCommentForComment } from "./routes/comments/create_comment_for_co
 import { listCommentsForComment } from "./routes/comments/list_comments_for_comment.ts";
 import { voteOnComment } from "./routes/comments/vote_on_comment.ts";
 import { createCommentForSubmission } from "./routes/submissions/create_comment_for_submission.ts";
-import { listSubmissionCommentsRouter } from "./routes/submissions/list.ts";
+import { listCommentsForSubmission } from "./routes/submissions/list_comments_for_submission.ts";
 
 submissionCreatedSubscriber.listen();
 
@@ -12,13 +12,12 @@ const commentRouter = new Router()
   .post("/api/comments/:commentId/comments", createCommentForComment)
   .get("/api/comments/:commentId/comments", listCommentsForComment)
   .patch("/api/comments/:commentId/comments", voteOnComment)
-  .post("/api/submissions/:submissionId/comments", createCommentForSubmission);
+  .post("/api/submissions/:submissionId/comments", createCommentForSubmission)
+  .get("/api/submissions/:submissionId/comments", listCommentsForSubmission);
 
 const app = new Application()
   .use(errorHandler)
   .use(commentRouter.routes());
-
-app.use(listSubmissionCommentsRouter.routes());
 
 log.info("Listening on 8000");
 

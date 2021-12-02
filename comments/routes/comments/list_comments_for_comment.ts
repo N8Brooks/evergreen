@@ -5,7 +5,7 @@ const listCommentsForComment = async (
   context: RouterContext<"/api/comments/:commentId/comments">,
 ) => {
   // Comment exists or throw 404
-  const commentId = context.params.commentId;
+  const { commentId } = context.params;
   const comment = await comments.findOne({ _id: new Bson.ObjectId(commentId) });
   if (!comment) {
     throw new httpErrors.NotFound("Comment does not exist");
