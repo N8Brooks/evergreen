@@ -1,5 +1,4 @@
 import {
-  Bson,
   COOKIE_USER_NAME,
   httpErrors,
   log,
@@ -9,10 +8,11 @@ import {
 } from "../../deps.ts";
 import { commentCreatedPublisher } from "../../events/comment_created_publisher.ts";
 import { comments } from "../../models/comments.ts";
+import { submissions } from "../../models/submissions.ts";
 import { CreateCommentData } from "../create_comment_data.ts";
 
-const createCommentForComment = async (
-  context: RouterContext<"/api/comments/:commentId/comments">,
+const createCommentForSubmission = async (
+  context: RouterContext<"/api/submissions/:submissionId/comments">,
 ) => {
   // Get user name or throw 401
   const userName = await context.cookies.get(COOKIE_USER_NAME);
@@ -27,16 +27,15 @@ const createCommentForComment = async (
   superstruct.assert(data, CreateCommentData);
   const { text } = data;
 
-  // Retrieve parent comment or throw 404
-  const parentId = context.params.commentId;
-  const commentFilter = { _id: new Bson.ObjectId(parentId) };
-  const parent = await comments.findOne(commentFilter);
-  if (!parent) {
-    throw new httpErrors.NotFound("Parent comment does not exist");
+  // Get submission or throw 404
+  const { submissionId } = context.params;
+  const submission = await submissions.findOne({ _id: submissionId });
+  if (!submission) {
+    throw new httpErrors.NotFound("Submission does not exist");
   }
-  const { topicId, topicName, submissionId } = parent;
+  const { _id: topicId, topicName } = submission;
 
-  // Create record
+  // Insert comment record
   const createdAt = Date.now();
   const [language] = context.request.acceptsLanguages() ?? [];
   const _id = await comments.insertOne({
@@ -46,7 +45,6 @@ const createCommentForComment = async (
     topicName,
     userId,
     userName,
-    parentId,
     submissionId,
     text,
     ...VoteSortKeysBuilder.default,
@@ -54,18 +52,17 @@ const createCommentForComment = async (
   const id = _id.toString();
 
   // Debug
-  log.debug(`User ${userName} commented ${id} on comment ${parentId}`);
+  log.debug(`User ${userName} commented ${id} on submission ${submissionId}`);
 
   // Publish event
   commentCreatedPublisher.publish({
     id,
     createdAt,
     language,
-    topicName,
     topicId,
-    userName,
+    topicName,
     userId,
-    parentId,
+    userName,
     submissionId,
     text,
   });
@@ -75,4 +72,4 @@ const createCommentForComment = async (
   context.response.status = 201;
 };
 
-export { createCommentForComment };
+export { createCommentForSubmission };
