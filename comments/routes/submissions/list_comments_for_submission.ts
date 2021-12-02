@@ -5,11 +5,11 @@ import { submissions } from "../../models/submissions.ts";
 const listCommentsForSubmission = async (
   context: RouterContext<"/api/submissions/:submissionId/comments">,
 ) => {
-  // Comment exists or throw 404
+  // Submission exists or throw 404
   const { submissionId } = context.params;
   const submission = await submissions.findOne({ _id: submissionId });
   if (!submission) {
-    throw new httpErrors.NotFound("Comment does not exist");
+    throw new httpErrors.NotFound("Submission does not exist");
   }
 
   // TODO: truncate results
