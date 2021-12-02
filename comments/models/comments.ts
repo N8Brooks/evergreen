@@ -1,8 +1,9 @@
+import { VoteSortKeys } from "../deps.ts";
 import { mongoClient } from "./mongo_client.ts";
 
 const db = mongoClient.database("comments");
 
-export interface CommentSchema {
+export interface CommentSchema extends VoteSortKeys {
   /** Comment id */
   _id: string;
 
@@ -35,21 +36,6 @@ export interface CommentSchema {
 
   /** Comment body */
   text: string;
-
-  /** Positive votes */
-  upVotes: number;
-
-  /** Negative votes */
-  downVotes: number;
-
-  /** Confidence sort */
-  confidence: number;
-
-  /** Controversy sort */
-  controversy: number;
-
-  /** Difference of votes */
-  score: number;
 }
 
 // TODO: comment indexes
