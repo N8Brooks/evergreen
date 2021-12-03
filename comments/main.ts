@@ -5,20 +5,16 @@ import { commentsForSubmission } from "./routes/comments_for_submission.ts";
 
 submissionCreatedSubscriber.listen();
 
-const routes = new Router()
-  .use(
-    "/api/comments/:commentId/comments",
-    commentsForComment.routes(),
-  )
-  .use(
-    "/api/submissions/:submissionId/comments",
-    commentsForSubmission.routes(),
-  )
-  .routes();
+const commentsRouter = new Router()
+  .use("/comments/:commentId/comments", commentsForComment.routes())
+  .use("/submissions/:submissionId/comments", commentsForSubmission.routes());
+
+const apiRouter = new Router()
+  .use("/api", commentsRouter.routes());
 
 const app = new Application()
   .use(errorHandler)
-  .use(routes);
+  .use(apiRouter.routes());
 
 log.info("Listening on 8000");
 
