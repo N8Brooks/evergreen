@@ -1,6 +1,8 @@
 import {
   httpErrors,
   log,
+  requireAuth,
+  RequireAuthState,
   Router,
   superstruct,
   VOTE_DIRECTIONS,
@@ -9,7 +11,6 @@ import {
 } from "../deps.ts";
 import { commentCreatedPublisher } from "../events/comment_created_publisher.ts";
 import { commentVotedPublisher } from "../events/comment_voted_publisher.ts";
-import { requireAuth, RequireAuthState } from "../middle_wares/require_auth.ts";
 import { comments, CommentSchema } from "../models/comments.ts";
 import { votes } from "../models/votes.ts";
 import { CreateCommentData } from "./create_comment_data.ts";
