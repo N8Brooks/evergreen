@@ -166,4 +166,4 @@ const router = new Router<CommentsForCommentState>()
     context.response.status = 204;
   });
 
-export { router as commentsForCommentRouter };
+export { router as commentsForComment };
