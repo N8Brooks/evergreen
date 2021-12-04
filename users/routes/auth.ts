@@ -27,9 +27,10 @@ interface SignInSignUpState {
 }
 
 const router = new Router<SignInSignUpState>()
-  .post("/sign_out", (context) => {
+  .post("/sign_out", async (context) => {
     // Delete their cookie
-    context.cookies.delete(COOKIE_USER_NAME);
+    await context.cookies.set(COOKIE_USER_NAME, null);
+    context.response.body = {};
   })
   .use(async (context, next) => {
     // Validate request or throw 400
@@ -38,9 +39,15 @@ const router = new Router<SignInSignUpState>()
     superstruct.assert(data, SignInSignUpData);
 
     // Find possibly existing user
-    context.state._userName = data.name;
-    const id = data.name.toLowerCase();
-    context.state.user = await users.findOne({ _id: id });
+    const _userName = data.name;
+    const userId = _userName.toLowerCase();
+    const user = await users.findOne({ _id: userId });
+    context.state = {
+      _userName,
+      userId,
+      user,
+    };
+
     await next();
   })
   .post("/sign_in", (context) => {

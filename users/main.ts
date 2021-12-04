@@ -7,7 +7,7 @@ commentVotedSubscriber.listen();
 submissionVotedSubscriber.listen();
 
 const usersRouter = new Router()
-  .use("/api/users", auth.routes());
+  .use("/api/users", auth.routes(), auth.allowedMethods());
 
 const app = new Application()
   .use(errorHandler)
