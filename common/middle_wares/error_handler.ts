@@ -12,7 +12,8 @@ export const errorHandler = async (
     if (err instanceof StructError) {
       log.warning(err);
       context.response.status = 400;
-      context.response.body = { message: `Invalid: ${err.key}` };
+      const property = err.key ?? "body";
+      context.response.body = { message: `Invalid: ${property}` };
     } else if (err instanceof HttpError) {
       log.warning(err);
       context.response.status = err.status;
