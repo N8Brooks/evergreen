@@ -14,7 +14,7 @@ import { submissionVotedPublisher } from "../events/submission_voted_publisher.t
 import { submissions } from "../models/submissions.ts";
 import { votes } from "../models/votes.ts";
 
-const { NoVote } = VoteDirections;
+const { DownVote, NoVote, UpVote } = VoteDirections;
 
 const { object, enums } = superstruct;
 
@@ -98,6 +98,36 @@ const router = new Router<RequireAuthState>()
     });
 
     context.response.status = 204;
+  })
+  .get("/up_voted", async (context) => {
+    // Submissions the user has up voted
+    const { userId } = context.state;
+    const upVoteFilter = { userId, direction: UpVote };
+    const upVotes = await votes
+      .find(upVoteFilter)
+      .sort({ updatedAt: -1 })
+      .toArray();
+    const upVotedSubmissionIds = upVotes.map((upVote) =>
+      new Bson.ObjectId(upVote.submissionId) as unknown as string
+    );
+    context.response.body = await submissions
+      .find({ _id: { $in: upVotedSubmissionIds } })
+      .toArray();
+  })
+  .get("/down_voted", async (context) => {
+    // Submissions the user has down voted
+    const { userId } = context.state;
+    const downVoteFilter = { userId, direction: DownVote };
+    const downVotes = await votes
+      .find(downVoteFilter)
+      .sort({ updatedAt: -1 })
+      .toArray();
+    const downVotedSubmissionIds = downVotes.map((downVote) =>
+      new Bson.ObjectId(downVote.submissionId) as unknown as string
+    );
+    context.response.body = await submissions
+      .find({ _id: { $in: downVotedSubmissionIds } })
+      .toArray();
   });
 
 export { router as submissionsHandler };

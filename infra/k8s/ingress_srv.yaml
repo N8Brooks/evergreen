@@ -24,13 +24,6 @@ spec:
                 name: comments-srv
                 port:
                   number: 8000
-          - path: /api/submissions/(\w*)
-            pathType: Prefix
-            backend:
-              service:
-                name: submissions-srv
-                port:
-                  number: 8000
           - path: /api/submissions
             pathType: Prefix
             backend:
@@ -38,14 +31,21 @@ spec:
                 name: submissions-srv
                 port:
                   number: 8000
-          - path: /api/topics/(\w*)/submissions
+          - path: /api/submissions/(up_voted|down_voted)
             pathType: Prefix
             backend:
               service:
                 name: submissions-srv
                 port:
                   number: 8000
-          - path: /api/users/(\w*)/(submissions|up_voted|down_voted)
+          - path: /api/submissions/(\w*)
+            pathType: Prefix
+            backend:
+              service:
+                name: submissions-srv
+                port:
+                  number: 8000
+          - path: /api/(topics|users)/(\w*)/submissions
             pathType: Prefix
             backend:
               service:
