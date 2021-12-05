@@ -22,5 +22,6 @@ export * from "./types/vote_sort_keys.ts";
 export * from "./responses/submission_response.ts";
 // util
 export * from "./util/vote_sort_keys_builder.ts";
+export * from "./util/vote_sort_keys_builder.ts";
 // constants
 export * from "./constants.ts";
