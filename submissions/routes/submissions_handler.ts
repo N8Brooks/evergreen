@@ -18,7 +18,7 @@ const { DownVote, NoVote, UpVote } = VoteDirections;
 
 const { object, enums } = superstruct;
 
-const VoteSubmissionRequest = object({
+const VoteSubmissionData = object({
   direction: enums(VOTE_DIRECTIONS),
 });
 
@@ -36,7 +36,7 @@ const router = new Router<RequireAuthState>()
     // Assert data or throw 400
     const result = context.request.body();
     const data = await result.value;
-    superstruct.assert(data, VoteSubmissionRequest);
+    superstruct.assert(data, VoteSubmissionData);
     const newVoteDirection = data.direction;
 
     // Find referenced submission or throw 404
